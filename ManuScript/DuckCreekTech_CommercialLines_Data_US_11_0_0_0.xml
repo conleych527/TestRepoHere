@@ -9424,6 +9424,7 @@
                           <argument op="add" idref="MNAutomobileTheftPreventionSurchargeOutput.AmountWritten" type="float" />
                           <argument op="add" idref="MIAutomobileTheftPreventionAuthorityAssessmentOutput.AmountWritten" type="float" />
                           <argument op="add" idref="NCCommercialAutoLossRecoupmentSurchargeOutput.AmountWritten" type="float" />
+                          <argument op="add" idref="FLInsuranceGuarantyAssociationAssessmentOutput.AmountWritten" type="float" />
                         </calculation>
                       </else>
                     </if>
@@ -9471,6 +9472,7 @@
                           <argument op="add" idref="MNAutomobileTheftPreventionSurchargeOutput.AmountChange" type="float" />
                           <argument op="add" idref="MIAutomobileTheftPreventionAuthorityAssessmentOutput.AmountChange" type="float" />
                           <argument op="add" idref="NCCommercialAutoLossRecoupmentSurchargeOutput.AmountChange" type="float" />
+                          <argument op="add" idref="FLInsuranceGuarantyAssociationAssessmentOutput.AmountChange" type="float" />
                         </calculation>
                       </else>
                     </if>
@@ -9515,6 +9517,7 @@
                           <argument op="add" idref="MNAutomobileTheftPreventionSurchargeOutput.Amount" type="float" />
                           <argument op="add" idref="MIAutomobileTheftPreventionAuthorityAssessmentOutput.Amount" type="float" />
                           <argument op="add" idref="NCCommercialAutoLossRecoupmentSurchargeOutput.Amount" type="float" />
+                          <argument op="add" idref="FLInsuranceGuarantyAssociationAssessmentOutput.Amount" type="float" />
                         </calculation>
                       </else>
                     </if>
@@ -10660,6 +10663,19 @@
                       <value value="0" />
                     </private>
                     <private id="RiskNJPropertyLiabilityInsuranceGuarantyAssociationSurcharge.SubtotalWritten" type="float" comment="Sum of written premiums used to calculate specific tax/surcharge">
+                      <value value="0" />
+                    </private>
+                  </object>
+                  <object id="RiskFLInsuranceGuarantyAssociationAssessment">
+                    <minOccurs value="1" />
+                    <maxOccurs value="1" />
+                    <private id="RiskFLInsuranceGuarantyAssociationAssessment.Subtotal" type="float" comment="Sum of full term premiums used to calculate specific tax/surcharge">
+                      <value value="0" />
+                    </private>
+                    <private id="RiskFLInsuranceGuarantyAssociationAssessment.SubtotalChange" type="float" comment="Sum of change premiums used to calculate specific tax/surcharge">
+                      <value value="0" />
+                    </private>
+                    <private id="RiskFLInsuranceGuarantyAssociationAssessment.SubtotalWritten" type="float" comment="Sum of written premiums used to calculate specific tax/surcharge">
                       <value value="0" />
                     </private>
                   </object>
@@ -17688,6 +17704,7 @@
                         <argument op="eq" idref="LineWVPolicyholderSurchargePrivate.Total" type="float" />
                         <argument op="add" idref="LineKYMunicipalTaxOutput.Amount" type="float" />
                         <argument op="add" idref="LineKYPremiumSurchargePrivate.Total" type="float" />
+                        <argument op="add" idref="LineFLInsuranceGuarantyAssociationAssessmentPrivate.Total" type="float" />
                       </calculation>
                     </value>
                   </rules>
@@ -17705,6 +17722,7 @@
                         <argument op="eq" idref="LineWVPolicyholderSurchargePrivate.TotalWritten" type="float" />
                         <argument op="add" idref="LineKYMunicipalTaxPrivate.TotalWritten" type="float" />
                         <argument op="add" idref="LineKYPremiumSurchargePrivate.TotalWritten" type="float" />
+                        <argument op="add" idref="LineFLInsuranceGuarantyAssociationAssessmentPrivate.TotalWritten" type="float" />
                       </calculation>
                     </value>
                     <affects>
@@ -17725,6 +17743,7 @@
                         <argument op="eq" idref="LineWVPolicyholderSurchargePrivate.TotalChange" type="float" />
                         <argument op="add" idref="LineKYMunicipalTaxOutput.Change" type="float" />
                         <argument op="add" idref="LineKYPremiumSurchargePrivate.TotalChange" type="float" />
+                        <argument op="add" idref="LineFLInsuranceGuarantyAssociationAssessmentPrivate.TotalChange" type="float" />
                       </calculation>
                     </value>
                   </rules>
@@ -17873,6 +17892,41 @@
                     <private id="LineSubtotal_NJPropertyLiabilityInsuranceGuarantyAssociationSurcharge.PremiumWritten" type="float" comment="" caption="Line Total_NJ Property Liability Insurance Guaranty Association Surcharge Premiums Premium Written" />
                   </object>
                 </object>
+                <object id="FLInsuranceGuarantyAssociationAssessmentSubtotals">
+                  <minOccurs value="1" />
+                  <maxOccurs value="1" />
+                  <private id="FLInsuranceGuarantyAssociationAssessmentSubtotals.Premium" caption="" type="float">
+                    <value>
+                      <calculation>
+                        <argument op="eq" idref="RiskSubtotal_FLInsuranceGuarantyAssociationAssessment.Premium" type="float" />
+                        <argument op="add" idref="LineSubtotal_FLInsuranceGuarantyAssociationAssessment.Premium" type="float" />
+                      </calculation>
+                    </value>
+                  </private>
+                  <private id="FLInsuranceGuarantyAssociationAssessmentSubtotals.PremiumChange" type="float" comment="">
+                    <value>
+                      <calculation>
+                        <argument op="eq" idref="RiskSubtotal_FLInsuranceGuarantyAssociationAssessment.PremiumChange" type="float" />
+                        <argument op="add" idref="LineSubtotal_FLInsuranceGuarantyAssociationAssessment.PremiumChange" type="float" />
+                      </calculation>
+                    </value>
+                  </private>
+                  <private id="FLInsuranceGuarantyAssociationAssessmentSubtotals.PremiumWritten" type="float" comment="">
+                    <value>
+                      <calculation>
+                        <argument op="eq" idref="RiskSubtotal_FLInsuranceGuarantyAssociationAssessment.PremiumWritten" type="float" />
+                        <argument op="add" idref="LineSubtotal_FLInsuranceGuarantyAssociationAssessment.PremiumWritten" type="float" />
+                      </calculation>
+                    </value>
+                  </private>
+                  <object id="LineSubtotal_FLInsuranceGuarantyAssociationAssessment">
+                    <minOccurs value="1" />
+                    <maxOccurs value="1" />
+                    <private id="LineSubtotal_FLInsuranceGuarantyAssociationAssessment.Premium" caption="" type="float" />
+                    <private id="LineSubtotal_FLInsuranceGuarantyAssociationAssessment.PremiumChange" type="float" comment="" />
+                    <private id="LineSubtotal_FLInsuranceGuarantyAssociationAssessment.PremiumWritten" type="float" comment="" />
+                  </object>
+                </object>
               </object>
             </object>
             <object id="LineSubtotals" abstract="1">
@@ -17895,6 +17949,9 @@
                           <subtotal idref="RiskKYMunicipalTax.SubtotalWritten" type="float" subtotalRef="RiskSubtotal_KYMunicipal.PremiumWritten" validRef="LocationPrivate.StateIsKY" />
                           <subtotal idref="RiskKYMunicipalTax.SubtotalChange" type="float" subtotalRef="RiskSubtotal_KYMunicipal.PremiumChange" validRef="LocationPrivate.StateIsKY" />
                           <subtotal idref="RiskKYMunicipalTax.Subtotal" type="float" subtotalRef="RiskSubtotal_KYMunicipal.Premium" validRef="LocationPrivate.StateIsKY" />
+                          <subtotal idref="RiskFLInsuranceGuarantyAssociationAssessment.SubtotalWritten" type="float" subtotalRef="RiskSubtotal_FLInsuranceGuarantyAssociationAssessment.PremiumWritten" validRef="LocationPrivate.StateIsFL" />
+                          <subtotal idref="RiskFLInsuranceGuarantyAssociationAssessment.SubtotalChange" type="float" subtotalRef="RiskSubtotal_FLInsuranceGuarantyAssociationAssessment.PremiumChange" validRef="LocationPrivate.StateIsFL" />
+                          <subtotal idref="RiskFLInsuranceGuarantyAssociationAssessment.Subtotal" type="float" subtotalRef="RiskSubtotal_FLInsuranceGuarantyAssociationAssessment.Premium" validRef="LocationPrivate.StateIsFL" />
                         </iterator>
                       </value>
                     </private>
@@ -18159,6 +18216,76 @@
                     <public id="RiskSubtotal_NJPropertyLiabilityInsuranceGuarantyAssociationSurcharge.PremiumWritten" path="taxAppliedTo[Type=&quot;NJPropertyLiabilityInsuranceGuarantyAssociationSurcharge&quot; and Scope=&quot;Risk&quot;]/@written" type="float" class="excludeInChangeSummary">
                       <definition>
                         <caption value="Risk Subtotal_NJ Property Liability Insurance Guaranty Association Surcharge Premium Written" />
+                        <maxLength idref="MaxLength.fValue" />
+                        <formatMask idref="FormatMask.PremiumPenniesDisplay" />
+                        <readOnly idref="True" />
+                      </definition>
+                      <nameValues />
+                      <rules>
+                        <misc>
+                          <if>
+                            <condition>
+                              <comparison compare="eq">
+                                <operand idref="LinePrivate.RiskExistsIncludeDeleted" type="boolean" />
+                                <operand type="int" value="0" />
+                              </comparison>
+                            </condition>
+                            <then value="0" />
+                          </if>
+                        </misc>
+                      </rules>
+                    </public>
+                  </object>
+                  <object id="RiskSubtotal_FLInsuranceGuarantyAssociationAssessment">
+                    <minOccurs value="1" />
+                    <maxOccurs value="1" />
+                    <public id="RiskSubtotal_FLInsuranceGuarantyAssociationAssessment.Premium" path="taxAppliedTo[Type=&quot;FLInsuranceGuarantyAssociationAssessment&quot; and Scope=&quot;Risk&quot;]/@premium" type="float" class="excludeInChangeSummary">
+                      <definition>
+                        <caption value="Risk Subtotal_FL Insurance Guaranty Association Assessment Premium" />
+                        <maxLength idref="MaxLength.fValue" />
+                        <formatMask idref="FormatMask.PremiumPenniesDisplay" />
+                        <readOnly idref="True" />
+                      </definition>
+                      <nameValues />
+                      <rules>
+                        <misc>
+                          <if>
+                            <condition>
+                              <comparison compare="eq">
+                                <operand idref="LinePrivate.RiskExistsIncludeDeleted" type="boolean" />
+                                <operand type="int" value="0" />
+                              </comparison>
+                            </condition>
+                            <then value="0" />
+                          </if>
+                        </misc>
+                      </rules>
+                    </public>
+                    <public id="RiskSubtotal_FLInsuranceGuarantyAssociationAssessment.PremiumChange" path="taxAppliedTo[Type=&quot;FLInsuranceGuarantyAssociationAssessment&quot; and Scope=&quot;Risk&quot;]/@change" type="float" class="excludeInChangeSummary">
+                      <definition>
+                        <caption value="Risk Subtotal_FL Insurance Guaranty Association Assessment Premium Change" />
+                        <maxLength idref="MaxLength.fValue" />
+                        <formatMask idref="FormatMask.PremiumPenniesDisplay" />
+                        <readOnly idref="True" />
+                      </definition>
+                      <nameValues />
+                      <rules>
+                        <misc>
+                          <if>
+                            <condition>
+                              <comparison compare="eq">
+                                <operand idref="LinePrivate.RiskExistsIncludeDeleted" type="boolean" />
+                                <operand type="int" value="0" />
+                              </comparison>
+                            </condition>
+                            <then value="0" />
+                          </if>
+                        </misc>
+                      </rules>
+                    </public>
+                    <public id="RiskSubtotal_FLInsuranceGuarantyAssociationAssessment.PremiumWritten" path="taxAppliedTo[Type=&quot;FLInsuranceGuarantyAssociationAssessment&quot; and Scope=&quot;Risk&quot;]/@written" type="float" class="excludeInChangeSummary">
+                      <definition>
+                        <caption value="Risk Subtotal_FL Insurance Guaranty Association Assessment Premium Written" />
                         <maxLength idref="MaxLength.fValue" />
                         <formatMask idref="FormatMask.PremiumPenniesDisplay" />
                         <readOnly idref="True" />
@@ -24138,6 +24265,279 @@
                 </object>
               </object>
             </object>
+            <object id="LineFLInsuranceGuarantyAssociationAssessment">
+              <minOccurs value="1" />
+              <maxOccurs value="1" />
+              <object id="LineFLInsuranceGuarantyAssociationAssessmentOutput">
+                <minOccurs value="1" />
+                <maxOccurs value="1" />
+                <public id="LineFLInsuranceGuarantyAssociationAssessmentOutput.Amount" path="lineStateTaxSurcharge[Type=&quot;FLInsuranceGuarantyAssociationAssessment&quot;]/fValue" type="float" class="Premium" alwaysRun="1">
+                  <definition>
+                    <caption value="FL Insurance Guaranty Association Assessment" />
+                    <readOnly idref="True" />
+                    <formatMask idref="FormatMask.PremiumPenniesDisplay" />
+                    <maxLength idref="MaxLength.fValue" />
+                  </definition>
+                  <rules>
+                    <affects>
+                      <reference idref="LineFLInsuranceGuarantyAssociationAssessmentOutput.Indicator" effect="postEffect" />
+                    </affects>
+                  </rules>
+                </public>
+                <public id="LineFLInsuranceGuarantyAssociationAssessmentOutput.Change" path="lineStateTaxSurcharge[Type=&quot;FLInsuranceGuarantyAssociationAssessment&quot;]/@change" type="float">
+                  <definition>
+                    <caption value="Line FL Insurance Guaranty Association Assessment Output Change" />
+                    <readOnly idref="True" />
+                    <formatMask idref="FormatMask.PremiumPenniesDisplay" />
+                    <maxLength idref="MaxLength.fValue" />
+                  </definition>
+                </public>
+                <public id="LineFLInsuranceGuarantyAssociationAssessmentOutput.Indicator" path="lineStateTaxSurcharge[Type=&quot;FLInsuranceGuarantyAssociationAssessment&quot;]/Indicator" type="boolean" alwaysRun="1">
+                  <definition>
+                    <caption value="Indicator" />
+                  </definition>
+                  <rules>
+                    <default idref="False" />
+                    <value idref="LineFLInsuranceGuarantyAssociationAssessmentPrivate.Indicator" />
+                  </rules>
+                </public>
+                <public id="LineFLInsuranceGuarantyAssociationAssessmentOutput.TaxState" path="lineStateTaxSurcharge[Type=&quot;FLInsuranceGuarantyAssociationAssessment&quot;]/TaxState" type="string">
+                  <definition>
+                    <caption value="Line FL Insurance Guaranty Association Assessment Output Tax State" />
+                    <readOnly idref="True" />
+                  </definition>
+                  <rules>
+                    <default value="FL" />
+                  </rules>
+                </public>
+                <public id="LineFLInsuranceGuarantyAssociationAssessmentOutput.Written" path="lineStateTaxSurcharge[Type=&quot;FLInsuranceGuarantyAssociationAssessment&quot;]/@written" type="float" alwaysRun="1">
+                  <definition>
+                    <caption value="Line FL Insurance Guaranty Association Assessment Output Written" />
+                    <readOnly idref="True" />
+                    <formatMask idref="FormatMask.PremiumPenniesDisplay" />
+                    <maxLength idref="MaxLength.fValue" />
+                  </definition>
+                  <rules>
+                    <affects>
+                      <reference idref="LineFLInsuranceGuarantyAssociationAssessmentOutput.Indicator" effect="postEffect" />
+                    </affects>
+                  </rules>
+                </public>
+              </object>
+              <object id="LineFLInsuranceGuarantyAssociationAssessmentPrivate">
+                <minOccurs value="1" />
+                <maxOccurs value="1" />
+                <private id="LineFLInsuranceGuarantyAssociationAssessmentPrivate.Indicator" caption="" type="boolean" alwaysRun="1">
+                  <value>
+                    <comparison compare="gt">
+                      <operand idref="LineFLInsuranceGuarantyAssociationAssessmentOutput.Amount" type="float" />
+                      <operand type="int" value="0" />
+                    </comparison>
+                  </value>
+                </private>
+                <private id="LineFLInsuranceGuarantyAssociationAssessmentPrivate.IsAvailable" caption="" type="boolean">
+                  <value>
+                    <comparison compare="eq">
+                      <operand idref="AccountPrivate.IsAnyLocationFL" type="boolean" />
+                      <operand idref="True" type="int" />
+                    </comparison>
+                  </value>
+                </private>
+                <private id="LineFLInsuranceGuarantyAssociationAssessmentPrivate.ManuScriptID" caption="" type="string">
+                  <value>
+                    <iterator type="string" scope="first" action="sum" idref="Location">
+                      <reference idref="LocationTaxManuscript.ManuScriptID" type="string" />
+                      <customQuery idref="AccountPrivate.IsAnyLocationFLXPath" />
+                    </iterator>
+                  </value>
+                </private>
+                <private id="LineFLInsuranceGuarantyAssociationAssessmentPrivate.Percent" caption="" type="float">
+                  <value>
+                    <lookup>
+                      <tableRef value="(custom defined)" idref="LineFLInsuranceGuarantyAssociationAssessmentPrivate.TableName" />
+                      <manuscriptName idref="LineFLInsuranceGuarantyAssociationAssessmentPrivate.ManuScriptID" />
+                      <fieldRef value="Value" />
+                      <onFailure value="0" />
+                      <keyRef type="string" value="FLInsuranceGuarantyAssociationAssessment" name="TaxFeeSurcharge" />
+                      <keyRef idref="LineOutput.Type" type="string" name="Line" />
+                    </lookup>
+                  </value>
+                  <worksheet>
+                    <caption value="Assessment Rate" />
+                  </worksheet>
+                </private>
+                <private id="LineFLInsuranceGuarantyAssociationAssessmentPrivate.TableName" caption="" type="string">
+                  <value value="TaxFeeSurchargeValue" />
+                </private>
+                <private id="LineFLInsuranceGuarantyAssociationAssessmentPrivate.Total" type="float">
+                  <value>
+                    <if>
+                      <condition>
+                        <comparison compare="or">
+                          <comparison compare="eq">
+                            <operand idref="LineFLInsuranceGuarantyAssociationAssessmentPrivate.IsAvailable" type="boolean" />
+                            <operand idref="False" type="int" />
+                          </comparison>
+                          <comparison compare="eq">
+                            <operand idref="LinePrivate.StopLineRating" type="boolean" />
+                            <operand idref="True" type="int" />
+                          </comparison>
+                        </comparison>
+                      </condition>
+                      <then value="0" />
+                      <else>
+                        <calculation>
+                          <argument op="eq" idref="LineFLInsuranceGuarantyAssociationAssessmentPrivate.FLPremium" type="float" />
+                          <argument op="multiply" round="100" roundType="round" idref="LineFLInsuranceGuarantyAssociationAssessmentPrivate.Percent" type="float" />
+                        </calculation>
+                      </else>
+                    </if>
+                  </value>
+                  <affects>
+                    <reference idref="LineFLInsuranceGuarantyAssociationAssessmentOutput.Amount" effect="setValue" />
+                  </affects>
+                  <worksheet>
+                    <comparison idref="True" type="int" />
+                    <caption value="Total" />
+                    <formatMask idref="FormatMask.PremiumPenniesDisplay" />
+                  </worksheet>
+                </private>
+                <private id="LineFLInsuranceGuarantyAssociationAssessmentPrivate.TotalChange" type="float">
+                  <value>
+                    <if>
+                      <condition>
+                        <comparison compare="or">
+                          <comparison compare="eq">
+                            <operand idref="LineFLInsuranceGuarantyAssociationAssessmentPrivate.IsAvailable" type="boolean" />
+                            <operand idref="False" type="int" />
+                          </comparison>
+                          <comparison compare="eq">
+                            <operand idref="LinePrivate.StopLineRating" type="boolean" />
+                            <operand idref="True" type="int" />
+                          </comparison>
+                        </comparison>
+                      </condition>
+                      <then value="0" />
+                      <else>
+                        <calculation>
+                          <argument op="eq" idref="LineFLInsuranceGuarantyAssociationAssessmentPrivate.FLPremiumChange" type="float" />
+                          <argument op="multiply" round="100" roundType="round" idref="LineFLInsuranceGuarantyAssociationAssessmentPrivate.Percent" type="float" />
+                        </calculation>
+                      </else>
+                    </if>
+                  </value>
+                  <affects>
+                    <reference idref="LineFLInsuranceGuarantyAssociationAssessmentOutput.Change" effect="setValue" />
+                  </affects>
+                </private>
+                <private id="LineFLInsuranceGuarantyAssociationAssessmentPrivate.TotalWritten" type="float">
+                  <value>
+                    <if>
+                      <condition>
+                        <comparison compare="or">
+                          <comparison compare="eq">
+                            <operand idref="LineFLInsuranceGuarantyAssociationAssessmentPrivate.IsAvailable" type="boolean" />
+                            <operand idref="False" type="int" />
+                          </comparison>
+                          <comparison compare="eq">
+                            <operand idref="LinePrivate.StopLineRating" type="boolean" />
+                            <operand idref="True" type="int" />
+                          </comparison>
+                        </comparison>
+                      </condition>
+                      <then value="0" />
+                      <else>
+                        <calculation>
+                          <argument op="eq" idref="LineFLInsuranceGuarantyAssociationAssessmentPrivate.FLPremiumWritten" type="float" />
+                          <argument op="multiply" round="100" roundType="round" idref="LineFLInsuranceGuarantyAssociationAssessmentPrivate.Percent" type="float" />
+                        </calculation>
+                      </else>
+                    </if>
+                  </value>
+                  <affects>
+                    <reference idref="LineFLInsuranceGuarantyAssociationAssessmentOutput.Written" effect="setValue" />
+                  </affects>
+                  <worksheet>
+                    <comparison idref="True" type="int" />
+                    <caption value="Total Written" />
+                    <formatMask idref="FormatMask.PremiumPenniesDisplay" />
+                  </worksheet>
+                </private>
+                <private id="LineFLInsuranceGuarantyAssociationAssessmentPrivate.FLPremium" caption="" type="float">
+                  <value idref="FLInsuranceGuarantyAssociationAssessmentSubtotals.Premium" />
+                  <worksheet suppress="1">
+                    <caption value="Premium Subtotal" />
+                    <formatMask idref="FormatMask.PremiumPenniesDisplay" />
+                  </worksheet>
+                </private>
+                <private id="LineFLInsuranceGuarantyAssociationAssessmentPrivate.FLPremiumChange" caption="" type="float">
+                  <value idref="FLInsuranceGuarantyAssociationAssessmentSubtotals.PremiumChange" />
+                </private>
+                <private id="LineFLInsuranceGuarantyAssociationAssessmentPrivate.FLPremiumWritten" caption="" type="float">
+                  <value idref="FLInsuranceGuarantyAssociationAssessmentSubtotals.PremiumWritten" />
+                  <worksheet suppress="1">
+                    <caption value="Premium Written Subtotal" />
+                    <formatMask idref="FormatMask.PremiumPenniesDisplay" />
+                  </worksheet>
+                </private>
+              </object>
+              <object id="LineFLInsuranceGuarantyAssociationAssessment_Config" path="lineStateTaxSurcharge[Type=&quot;FLInsuranceGuarantyAssociationAssessment&quot;]" caption=" ">
+                <minOccurs value="1" />
+                <maxOccurs value="1" />
+                <object id="LineFLInsuranceGuarantyAssociationAssessmentOutput_Config" caption=" ">
+                  <minOccurs value="1" />
+                  <maxOccurs value="1" />
+                  <public id="LineFLInsuranceGuarantyAssociationAssessmentOutput_Config.Change" path="change" type="float" comment=" ">
+                    <definition>
+                      <caption value="Line FL Insurance Guaranty Association Assessment Output_ Config Change" />
+                      <readOnly idref="True" />
+                      <formatMask idref="FormatMask.PremiumPenniesDisplay" />
+                      <maxLength idref="MaxLength.fValue" />
+                    </definition>
+                  </public>
+                  <public id="LineFLInsuranceGuarantyAssociationAssessmentOutput_Config.Written" path="written" type="float" comment="Short rate set to zero to make sure the written config does not try to return premium during cancel.  This returned amount will be handled manually within the calculation.">
+                    <definition>
+                      <caption value="Line FL Insurance Guaranty Association Assessment Output_ Config Written" />
+                      <readOnly idref="True" />
+                      <formatMask idref="FormatMask.PremiumPenniesDisplay" />
+                      <maxLength idref="MaxLength.fValue" />
+                    </definition>
+                    <rules>
+                      <value>
+                        <written useShared="0" round="100" roundType="round">
+                          <writtenRef idref="LineFLInsuranceGuarantyAssociationAssessmentOutput_Config.WrittenCalcPlaceHolder" type="float" infoType="term" />
+                          <writtenInfo idref="WrittenPremiumSharedConfiguration.MinimumPremiumDefault" type="int" infoType="minimum" />
+                          <writtenInfo idref="WrittenPremiumSharedConfiguration.FullyEarnedDefault" type="boolean" infoType="fullyEarned" />
+                          <writtenInfo idref="WrittenPremiumSharedConfiguration.FlatChargeDefault" type="boolean" infoType="flatCharge" />
+                          <writtenInfo type="int" value="1" infoType="clearPremIfDeleted" />
+                          <writtenRefPath idref="WrittenPremiumSharedConfiguration.PriorWrittenPath" type="string" infoType="priorTerm" useXPath="1" />
+                          <writtenRefPath idref="WrittenPremiumSharedConfiguration.PriorWrittenPath" type="string" infoType="priorWritten" useXPath="1" />
+                          <writtenRefPath idref="WrittenPremiumSharedConfiguration.ChangePath" type="string" infoType="charge" useXPath="1" />
+                          <writtenRef idref="PolicyInput.EffectiveDate" type="date" infoType="effDate" />
+                          <writtenRef idref="PolicyInput.ExpirationDate" type="date" infoType="exDate" />
+                          <writtenRef idref="CurrentTransaction.EffectiveDate" type="date" infoType="transDate" />
+                          <writtenRef idref="ConstantsPolicyAdminProcessing.ProRateType" type="int" infoType="proRateType" />
+                          <writtenInfo type="float" value="1.0" infoType="proRate" />
+                          <writtenInfo type="int" value="0" infoType="shortRate" />
+                          <writtenInfo idref="WrittenPremiumSharedConfiguration.ProrateRoundingFactor" type="int" infoType="precision" />
+                        </written>
+                      </value>
+                    </rules>
+                    <descriptors>
+                      <descriptor code="Minimum" />
+                    </descriptors>
+                  </public>
+                  <public id="LineFLInsuranceGuarantyAssociationAssessmentOutput_Config.WrittenCalcPlaceHolder" path="WrittenCalcPlaceHolder" type="float">
+                    <definition>
+                      <caption value="Line FL Insurance Guaranty Association Assessment Output_ Config Written Calc Place Holder" />
+                    </definition>
+                    <rules>
+                      <value idref="LineFLInsuranceGuarantyAssociationAssessmentOutput.Written" />
+                    </rules>
+                  </public>
+                </object>
+              </object>
+            </object>
           </object>
         </object>
         <object id="Forms">
@@ -27390,6 +27790,9 @@
                 <subtotal idref="LineNCCommercialAutoLossRecoupmentSurchargeOutput.Written" type="float" subtotalRef="NCCommercialAutoLossRecoupmentSurchargeOutputNonShredded.AmountWrittenBeforeRounding" validRef="LinePrivate.IsNCCommercialAutoLossRecoupmentSurchargeAvailable" />
                 <subtotal idref="LineNCCommercialAutoLossRecoupmentSurchargeOutput.Change" type="float" subtotalRef="NCCommercialAutoLossRecoupmentSurchargeOutputNonShredded.AmountChangeBeforeRounding" validRef="LinePrivate.IsNCCommercialAutoLossRecoupmentSurchargeAvailable" />
                 <subtotal idref="LineNCCommercialAutoLossRecoupmentSurchargeOutput.Amount" type="float" subtotalRef="NCCommercialAutoLossRecoupmentSurchargeOutputNonShredded.AmountBeforeRounding" validRef="LinePrivate.IsNCCommercialAutoLossRecoupmentSurchargeAvailable" />
+                <subtotal idref="LineFLInsuranceGuarantyAssociationAssessmentOutput_Config.Written" type="float" subtotalRef="FLInsuranceGuarantyAssociationAssessmentOutputNonShredded.AmountWrittenBeforeRounding" validRef="AccountPrivate.IsAnyLocationFLIncludeDeleted" />
+                <subtotal idref="LineFLInsuranceGuarantyAssociationAssessmentOutput_Config.Change" type="float" subtotalRef="FLInsuranceGuarantyAssociationAssessmentOutputNonShredded.AmountChangeBeforeRounding" validRef="AccountPrivate.IsAnyLocationFLIncludeDeleted" />
+                <subtotal idref="LineFLInsuranceGuarantyAssociationAssessmentOutput.Amount" type="float" subtotalRef="FLInsuranceGuarantyAssociationAssessmentOutputNonShredded.AmountBeforeRounding" validRef="AccountPrivate.IsAnyLocationFLIncludeDeleted" />
                 <customQuery idref="PolicyPrivate.SelectedLineXPath" />
               </iterator>
             </value>
@@ -27464,6 +27867,9 @@
               <reference idref="NCCommercialAutoLossRecoupmentSurchargeOutput.Amount" effect="postEffect" />
               <reference idref="NCCommercialAutoLossRecoupmentSurchargeOutput.AmountChange" effect="postEffect" />
               <reference idref="NCCommercialAutoLossRecoupmentSurchargeOutput.AmountWritten" effect="postEffect" />
+              <reference idref="FLInsuranceGuarantyAssociationAssessmentOutput.Amount" effect="postEffect" />
+              <reference idref="FLInsuranceGuarantyAssociationAssessmentOutput.AmountChange" effect="postEffect" />
+              <reference idref="FLInsuranceGuarantyAssociationAssessmentOutput.AmountWritten" effect="postEffect" />
             </affects>
           </private>
           <object id="NJPropertyLiabilityInsuranceGuarantyAssociationSurcharge" path="stateTaxSurcharge[Type=&quot;NJPropertyLiabilityInsuranceGuarantyAssociationSurcharge&quot; and Scope=&quot;Surcharge&quot;]">
@@ -29575,6 +29981,109 @@
                   </value>
                 </rules>
               </public>
+            </object>
+          </object>
+          <object id="FLInsuranceGuarantyAssociationAssessment" path="stateTaxSurcharge[Type=&quot;FLInsuranceGuarantyAssociationAssessment&quot; and Scope=&quot;Assessment&quot;]">
+            <minOccurs value="1" />
+            <maxOccurs value="1" />
+            <object id="FLInsuranceGuarantyAssociationAssessmentOutput">
+              <minOccurs value="1" />
+              <maxOccurs value="1" />
+              <public id="FLInsuranceGuarantyAssociationAssessmentOutput.Amount" path="Amount" type="float">
+                <definition>
+                  <caption value="FL Insurance Guaranty Association Assessment" />
+                  <maxLength idref="MaxLength.fValue" />
+                  <formatMask idref="FormatMask.PremiumPennies" />
+                </definition>
+                <rules>
+                  <value>
+                    <calculation>
+                      <argument op="eq" idref="FLInsuranceGuarantyAssociationAssessmentOutputNonShredded.AmountBeforeRounding" type="float" />
+                      <argument op="multiply" round="100" roundType="round" type="int" value="1" />
+                    </calculation>
+                  </value>
+                  <affects>
+                    <reference idref="FLInsuranceGuarantyAssociationAssessmentOutput.Indicator" effect="postEffect" />
+                  </affects>
+                </rules>
+              </public>
+              <public path="change" type="float" class="excludeInChangeSummary" id="FLInsuranceGuarantyAssociationAssessmentOutput.AmountChange">
+                <definition>
+                  <caption value="FL Insurance Guaranty Association Assessment Output Amount Change" />
+                  <maxLength idref="MaxLength.Premium" />
+                  <formatMask idref="FormatMask.PremiumPennies" />
+                  <readOnly idref="True" />
+                </definition>
+                <rules>
+                  <value>
+                    <calculation>
+                      <argument op="eq" idref="FLInsuranceGuarantyAssociationAssessmentOutputNonShredded.AmountChangeBeforeRounding" type="float" />
+                      <argument op="multiply" round="100" roundType="round" type="int" value="1" />
+                    </calculation>
+                  </value>
+                </rules>
+              </public>
+              <public path="written" type="float" class="excludeInChangeSummary" id="FLInsuranceGuarantyAssociationAssessmentOutput.AmountWritten">
+                <definition>
+                  <caption value="FL Insurance Guaranty Association Assessment Output Amount Written" />
+                  <maxLength idref="MaxLength.Premium" />
+                  <formatMask idref="FormatMask.PremiumPennies" />
+                  <readOnly idref="True" />
+                </definition>
+                <rules>
+                  <value>
+                    <calculation>
+                      <argument op="eq" idref="FLInsuranceGuarantyAssociationAssessmentOutputNonShredded.AmountWrittenBeforeRounding" type="float" />
+                      <argument op="multiply" round="100" roundType="round" type="int" value="1" />
+                    </calculation>
+                  </value>
+                </rules>
+              </public>
+              <public id="FLInsuranceGuarantyAssociationAssessmentOutput.Indicator" path="Indicator" type="boolean">
+                <definition>
+                  <caption value="FL Insurance Guaranty Association Assessment Output Indicator" />
+                </definition>
+                <rules>
+                  <default idref="False" />
+                  <value>
+                    <comparison compare="gt">
+                      <operand idref="FLInsuranceGuarantyAssociationAssessmentOutput.Amount" type="float" />
+                      <operand type="int" value="0" />
+                    </comparison>
+                  </value>
+                </rules>
+              </public>
+              <object id="FLInsuranceGuarantyAssociationAssessmentOutputNonShredded">
+                <minOccurs value="1" />
+                <maxOccurs value="1" />
+                <public id="FLInsuranceGuarantyAssociationAssessmentOutputNonShredded.AmountBeforeRounding" path="Amount" type="float">
+                  <definition>
+                    <caption value="FL Insurance Guaranty Association Assessment Output Non Shredded Amount Before Rounding" />
+                    <maxLength idref="MaxLength.fValue" />
+                    <formatMask idref="FormatMask.PremiumPennies" />
+                  </definition>
+                </public>
+                <public path="change" type="float" class="excludeInChangeSummary" id="FLInsuranceGuarantyAssociationAssessmentOutputNonShredded.AmountChangeBeforeRounding">
+                  <definition>
+                    <caption value="FL Insurance Guaranty Association Assessment Output Non Shredded Amount Change Before Rounding" />
+                    <maxLength idref="MaxLength.Premium" />
+                    <formatMask idref="FormatMask.PremiumPennies" />
+                    <readOnly idref="True" />
+                  </definition>
+                </public>
+                <public path="written" type="float" class="excludeInChangeSummary" id="FLInsuranceGuarantyAssociationAssessmentOutputNonShredded.AmountWrittenBeforeRounding">
+                  <definition>
+                    <caption value="FL Insurance Guaranty Association Assessment Output Non Shredded Amount Written Before Rounding" />
+                    <maxLength idref="MaxLength.Premium" />
+                    <formatMask idref="FormatMask.PremiumPennies" />
+                    <readOnly idref="True" />
+                  </definition>
+                </public>
+              </object>
+            </object>
+            <object id="FLInsuranceGuarantyAssociationAssessmentPrivate">
+              <minOccurs value="1" />
+              <maxOccurs value="1" />
             </object>
           </object>
         </object>
@@ -32256,6 +32765,19 @@
                   <value value="0" />
                 </private>
                 <private id="LocationNJPropertyLiabilityInsuranceGuarantyAssociationSurcharge.SubtotalWritten" type="float" comment="Sum of written premiums used to calculate specific tax/surcharge">
+                  <value value="0" />
+                </private>
+              </object>
+              <object id="LocationFLInsuranceGuarantyAssociationAssessment">
+                <minOccurs value="1" />
+                <maxOccurs value="1" />
+                <private id="LocationFLInsuranceGuarantyAssociationAssessment.Subtotal" type="float" comment="Sum of full term premiums used to calculate specific tax/surcharge">
+                  <value value="0" />
+                </private>
+                <private id="LocationFLInsuranceGuarantyAssociationAssessment.SubtotalChange" type="float" comment="Sum of change premiums used to calculate specific tax/surcharge">
+                  <value value="0" />
+                </private>
+                <private id="LocationFLInsuranceGuarantyAssociationAssessment.SubtotalWritten" type="float" comment="Sum of written premiums used to calculate specific tax/surcharge">
                   <value value="0" />
                 </private>
               </object>
