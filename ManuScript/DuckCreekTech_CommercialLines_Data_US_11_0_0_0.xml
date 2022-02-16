@@ -24018,7 +24018,7 @@
                       <written useShared="0" round="100" roundType="round">
                         <writtenRef idref="LineAZTheftProtectionAssessmentOutput.Amount" type="float" infoType="term" />
                         <writtenInfo idref="WrittenPremiumSharedConfiguration.MinimumPremiumDefault" type="int" infoType="minimum" />
-                        <writtenInfo idref="LineAZTheftProtectionAssessmentPrivate.FullyEarned" type="boolean" infoType="fullyEarned" />
+                        <writtenInfo idref="LineAZTheftProtectionAssessmentOutput.FullyEarnedIndicator" type="boolean" infoType="fullyEarned" />
                         <writtenInfo idref="LineAZTheftProtectionAssessmentPrivate.FlatCharge" type="boolean" infoType="flatCharge" />
                         <writtenInfo type="int" value="1" infoType="clearPremIfDeleted" />
                         <writtenRefPath idref="WrittenPremiumSharedConfiguration.PriorTermPath" type="string" infoType="priorTerm" useXPath="1" />
@@ -24052,6 +24052,27 @@
                       </comparison>
                     </value>
                     <default idref="False" />
+                  </rules>
+                </public>
+                <public id="LineAZTheftProtectionAssessmentOutput.FullyEarnedIndicator" path="lineStateTaxSurcharge[Type=&quot;AZTheftProtectionAssessment&quot;]/FullyEarnedIndicator" type="boolean">
+                  <definition>
+                    <caption value="Fully Earned Indicator" />
+                  </definition>
+                  <rules>
+                    <misc>
+                      <if>
+                        <condition>
+                          <comparison compare="and">
+                            <operand idref="ConstantsPolicyAdminProcessing.IsCancel" type="boolean" />
+                            <comparison compare="eq">
+                              <operand idref="PolicyPrivate.IsFlatCancel" type="boolean" />
+                              <operand idref="False" type="int" />
+                            </comparison>
+                          </comparison>
+                        </condition>
+                        <then idref="True" />
+                      </if>
+                    </misc>
                   </rules>
                 </public>
               </object>
