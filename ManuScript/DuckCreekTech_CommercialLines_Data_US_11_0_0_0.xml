@@ -7858,9 +7858,18 @@
                 <reference idref="LinePrivate.ClearLinePremiumTotals" type="float" />
                 <reference idref="LinePrivate.InitializeCoveragePremiumsLineNotSelected" type="float" />
                 <reference idref="LinePrivate.InitializeLineTaxAmountsNotSelected" type="float" />
+                <where>
+                  <comparison compare="eq">
+                    <operand idref="LinePrivate.IsPrimaryLine" type="boolean" />
+                    <operand idref="False" type="int" />
+                  </comparison>
+                </where>
                 <customQuery idref="PolicyPrivate.UnSelectedLineXPath" />
               </iterator>
             </value>
+            <affects>
+              <reference idref="PolicyPrivate.InitializeLocationTaxAmounts" effect="preEffect" />
+            </affects>
           </private>
           <private id="PolicyPrivate.UnSelectedLineXPath" caption="" type="string">
             <value>
@@ -8589,6 +8598,12 @@
             <value>
               <iterator type="float" scope="all" action="sum" includeDeleted="1" idref="AllStateTaxesSurcharges">
                 <reference idref="AllStateTaxesSurchargesPrivate.SetTaxToZero" type="float" />
+                <where>
+                  <comparison compare="eq">
+                    <operand idref="PolicyPrivate.IsWorkersCompensationLOB" type="boolean" />
+                    <operand idref="False" type="int" />
+                  </comparison>
+                </where>
                 <customQuery idref="PolicyPrivate.InitializeStateTaxSurchargesXPath" />
               </iterator>
             </value>
@@ -8956,6 +8971,136 @@
                 <operand idref="PolicyOutputNonShredded.LastTransactionType" type="string" />
                 <operand type="string" value="Information" />
               </comparison>
+            </value>
+          </private>
+          <private id="PolicyPrivate.InitializeLocationTaxAmounts" caption="" type="float">
+            <value>
+              <iterator type="float" scope="all" action="sum" idref="Location">
+                <subtotal idref="LocationPrivate.ClearCommercialAutoTaxValues" type="float" subtotalRef="LocationOutput.TaxCityChangeAmountCommercialAuto" validRef="LocationPrivate.IsCommercialAutoTaxValueInvalidForLocation" />
+                <subtotal idref="LocationPrivate.ClearGeneralLiabilityTaxValues" type="float" subtotalRef="LocationOutput.TaxCityChangeAmountGeneralLiability" validRef="LocationPrivate.IsGeneralLiabilityTaxValueInvalidForLocation" />
+                <subtotal idref="LocationPrivate.ClearBusinessOwnersTaxValues" type="float" subtotalRef="LocationOutput.TaxCityChangeAmountBusinessOwners" validRef="LocationPrivate.IsBusinessOwnersTaxValueInvalidForLocation" />
+                <subtotal idref="LocationPrivate.ClearCrimeTaxValues" type="float" subtotalRef="LocationOutput.TaxCityChangeAmountCrime" validRef="LocationPrivate.IsCrimeTaxValueInvalidForLocation" />
+                <subtotal idref="LocationPrivate.ClearInlandMarineAAISTaxValues" type="float" subtotalRef="LocationOutput.TaxCityChangeAmountInlandMarineAAIS" validRef="LocationPrivate.IsInlandMarineAAISTaxValueInvalidForLocation" />
+                <subtotal idref="LocationPrivate.ClearInlandMarineTaxValues" type="float" subtotalRef="LocationOutput.TaxCityChangeAmountInlandMarine" validRef="LocationPrivate.IsInlandMarineTaxValueInvalidForLocation" />
+                <subtotal idref="LocationPrivate.ClearPropertyTaxValues" type="float" subtotalRef="LocationOutput.TaxCityChangeAmountProperty" validRef="LocationPrivate.IsPropertyTaxValueInvalidForLocation" />
+                <customQuery idref="PolicyPrivate.InitializeLocationTaxAmountsXPath" />
+                <dependencies>
+                  <dependency idref="Line" />
+                  <dependency idref="Account" />
+                </dependencies>
+              </iterator>
+            </value>
+          </private>
+          <private id="PolicyPrivate.InitializeLocationTaxAmountsXPath" caption="" type="string">
+            <value>
+              <calculation>
+                <argument op="eq" type="string" value="location[" />
+                <argument op="add" idref="PolicyPrivate.InitializeLocationTaxCommercialAutoAmountsXPath" type="string" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" idref="PolicyPrivate.InitializeLocationTaxGeneralLiabilityAmountsXPath" type="string" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" idref="PolicyPrivate.InitializeLocationTaxBusinessOwnersAmountsXPath" type="string" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" idref="PolicyPrivate.InitializeLocationTaxCrimeAmountsXPath" type="string" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" idref="PolicyPrivate.InitializeLocationTaxInlandMarineAAISAmountsXPath" type="string" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" idref="PolicyPrivate.InitializeLocationTaxInlandMarineAmountsXPath" type="string" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" idref="PolicyPrivate.InitializeLocationTaxPropertyAmountsXPath" type="string" />
+                <argument op="add" type="string" value="]" />
+              </calculation>
+            </value>
+          </private>
+          <private id="PolicyPrivate.InitializeLocationTaxCommercialAutoAmountsXPath" caption="" type="string">
+            <value>
+              <calculation>
+                <argument op="eq" type="string" value="(TaxCityChangeAmountCommercialAuto!=0)" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" type="string" value="(TaxCityWrittenAmountCommercialAuto!=0)" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" type="string" value="(TaxCountyChangeAmountCommercialAuto!=0)" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" type="string" value="(TaxCountyWrittenAmountCommercialAuto!=0)" />
+              </calculation>
+            </value>
+          </private>
+          <private id="PolicyPrivate.InitializeLocationTaxGeneralLiabilityAmountsXPath" caption="" type="string">
+            <value>
+              <calculation>
+                <argument op="eq" type="string" value="(TaxCityChangeAmountGeneralLiability!=0)" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" type="string" value="(TaxCityWrittenAmountGeneralLiability!=0)" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" type="string" value="(TaxCountyChangeAmountGeneralLiability!=0)" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" type="string" value="(TaxCountyWrittenAmountGeneralLiability!=0)" />
+              </calculation>
+            </value>
+          </private>
+          <private id="PolicyPrivate.InitializeLocationTaxBusinessOwnersAmountsXPath" caption="" type="string">
+            <value>
+              <calculation>
+                <argument op="eq" type="string" value="(TaxCityChangeAmountBusinessOwners!=0)" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" type="string" value="(TaxCityWrittenAmountBusinessOwners!=0)" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" type="string" value="(TaxCountyChangeAmountBusinessOwners!=0)" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" type="string" value="(TaxCountyWrittenAmountBusinessOwners!=0)" />
+              </calculation>
+            </value>
+          </private>
+          <private id="PolicyPrivate.InitializeLocationTaxCrimeAmountsXPath" caption="" type="string">
+            <value>
+              <calculation>
+                <argument op="eq" type="string" value="(TaxCityChangeAmountCrime!=0)" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" type="string" value="(TaxCityWrittenAmountCrime!=0)" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" type="string" value="(TaxCountyChangeAmountCrime!=0)" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" type="string" value="(TaxCountyWrittenAmountCrime!=0)" />
+              </calculation>
+            </value>
+          </private>
+          <private id="PolicyPrivate.InitializeLocationTaxPropertyAmountsXPath" caption="" type="string">
+            <value>
+              <calculation>
+                <argument op="eq" type="string" value="(TaxCityChangeAmountProperty!=0)" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" type="string" value="(TaxCityWrittenAmountProperty!=0)" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" type="string" value="(TaxCountyChangeAmountProperty!=0)" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" type="string" value="(TaxCountyWrittenAmountProperty!=0)" />
+              </calculation>
+            </value>
+          </private>
+          <private id="PolicyPrivate.InitializeLocationTaxInlandMarineAmountsXPath" caption="" type="string">
+            <value>
+              <calculation>
+                <argument op="eq" type="string" value="(TaxCityChangeAmountInlandMarine!=0)" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" type="string" value="(TaxCityWrittenAmountInlandMarine!=0)" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" type="string" value="(TaxCountyChangeAmountInlandMarine!=0)" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" type="string" value="(TaxCountyWrittenAmountInlandMarine!=0)" />
+              </calculation>
+            </value>
+          </private>
+          <private id="PolicyPrivate.InitializeLocationTaxInlandMarineAAISAmountsXPath" caption="" type="string">
+            <value>
+              <calculation>
+                <argument op="eq" type="string" value="(TaxCityChangeAmountInlandMarineAAIS!=0)" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" type="string" value="(TaxCityWrittenAmountInlandMarineAAIS!=0)" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" type="string" value="(TaxCountyChangeAmountInlandMarineAAIS!=0)" />
+                <argument op="add" type="string" value=" or " />
+                <argument op="add" type="string" value="(TaxCountyWrittenAmountInlandMarineAAIS!=0)" />
+              </calculation>
             </value>
           </private>
         </object>
@@ -9974,39 +10119,16 @@
                 </private>
                 <private id="RiskManuScript.RateEffectiveDateBroker" type="date" caption="temp">
                   <value>
-                    <request verb="ManuScriptBroker.listRq" get="items/item/keys/key[@name=&quot;effectiveDateNew&quot;]/@value">
-                      <onFailure value="" />
-                      <modifySession value="" />
-                      <usesSession value="" />
-                      <default value="" />
-                      <nameValues>
-                        <nameValue value="" name="keys" dataType="element">
-                          <nameValue value="" name="key" dataType="element">
-                            <nameValue value="lob" name="name" dataType="attribute" />
-                            <nameValue value="=" name="operator" dataType="attribute" />
-                            <nameValue idref="RiskManuScript.LineOfBusinessKey" name="value" dataType="attribute" />
-                          </nameValue>
-                          <nameValue value="" name="key" dataType="element">
-                            <nameValue value="state" name="name" dataType="attribute" />
-                            <nameValue value="=" name="operator" dataType="attribute" />
-                            <nameValue idref="RiskManuScript.StateKey" name="value" dataType="attribute" />
-                          </nameValue>
-                          <nameValue value="" name="key" dataType="element">
-                            <nameValue idref="RiskManuScript.EffectiveDateKeyName" name="name" dataType="attribute" />
-                            <nameValue value="&lt;=" name="operator" dataType="attribute" />
-                            <nameValue idref="RiskManuScript.EffectiveDateKey" name="value" dataType="attribute" />
-                          </nameValue>
-                          <nameValue value="" name="sort" dataType="element">
-                            <nameValue idref="RiskManuScript.EffectiveDateKeyName" name="name" dataType="attribute" />
-                            <nameValue value="descending" name="direction" dataType="attribute" />
-                          </nameValue>
-                          <nameValue value="" name="sort" dataType="element">
-                            <nameValue value="version" name="name" dataType="attribute" />
-                            <nameValue value="descending" name="direction" dataType="attribute" />
-                          </nameValue>
-                        </nameValue>
-                      </nameValues>
-                    </request>
+                    <if>
+                      <condition>
+                        <comparison compare="ne">
+                          <operand idref="RiskManuScript.ManuScriptIDByCarrier" type="string" />
+                          <operand type="string" value="" />
+                        </comparison>
+                      </condition>
+                      <then idref="RiskManuScript.RateEffectiveDateBrokerByCarrier" />
+                      <else idref="RiskManuScript.RateEffectiveDateBrokerByNonCarrier" />
+                    </if>
                   </value>
                 </private>
                 <private id="RiskManuScript.SetRateEffectiveDate" caption="" type="string" alwaysRun="1">
@@ -10096,6 +10218,81 @@
                 </private>
                 <private id="RiskManuScript.StateKey" type="string">
                   <value idref="LocationInput.State" />
+                </private>
+                <private id="RiskManuScript.RateEffectiveDateBrokerByCarrier" type="date" caption="temp">
+                  <value>
+                    <request verb="ManuScriptBroker.listRq" get="items/item/keys/key[@name=&quot;effectiveDateNew&quot;]/@value">
+                      <responsePath value="" />
+                      <onFailure value="" />
+                      <modifySession value="" />
+                      <usesSession value="" />
+                      <default value="" />
+                      <nameValues>
+                        <nameValue value="" name="keys" dataType="element">
+                          <nameValue value="" name="key" dataType="element">
+                            <nameValue value="lob" name="name" dataType="attribute" />
+                            <nameValue value="=" name="operator" dataType="attribute" />
+                            <nameValue idref="RiskManuScript.LineOfBusinessKeyForCarrier" name="value" dataType="attribute" />
+                          </nameValue>
+                          <nameValue value="" name="key" dataType="element">
+                            <nameValue value="state" name="name" dataType="attribute" />
+                            <nameValue value="=" name="operator" dataType="attribute" />
+                            <nameValue idref="RiskManuScript.StateKey" name="value" dataType="attribute" />
+                          </nameValue>
+                          <nameValue value="" name="key" dataType="element">
+                            <nameValue idref="RiskManuScript.EffectiveDateKeyName" name="name" dataType="attribute" />
+                            <nameValue value="&lt;=" name="operator" dataType="attribute" />
+                            <nameValue idref="RiskManuScript.EffectiveDateKey" name="value" dataType="attribute" />
+                          </nameValue>
+                          <nameValue value="" name="sort" dataType="element">
+                            <nameValue idref="RiskManuScript.EffectiveDateKeyName" name="name" dataType="attribute" />
+                            <nameValue value="descending" name="direction" dataType="attribute" />
+                          </nameValue>
+                          <nameValue value="" name="sort" dataType="element">
+                            <nameValue value="version" name="name" dataType="attribute" />
+                            <nameValue value="descending" name="direction" dataType="attribute" />
+                          </nameValue>
+                        </nameValue>
+                      </nameValues>
+                    </request>
+                  </value>
+                </private>
+                <private id="RiskManuScript.RateEffectiveDateBrokerByNonCarrier" type="date" caption="temp">
+                  <value>
+                    <request verb="ManuScriptBroker.listRq" get="items/item/keys/key[@name=&quot;effectiveDateNew&quot;]/@value">
+                      <onFailure value="" />
+                      <modifySession value="" />
+                      <usesSession value="" />
+                      <default value="" />
+                      <nameValues>
+                        <nameValue value="" name="keys" dataType="element">
+                          <nameValue value="" name="key" dataType="element">
+                            <nameValue value="lob" name="name" dataType="attribute" />
+                            <nameValue value="=" name="operator" dataType="attribute" />
+                            <nameValue idref="RiskManuScript.LineOfBusinessKey" name="value" dataType="attribute" />
+                          </nameValue>
+                          <nameValue value="" name="key" dataType="element">
+                            <nameValue value="state" name="name" dataType="attribute" />
+                            <nameValue value="=" name="operator" dataType="attribute" />
+                            <nameValue idref="RiskManuScript.StateKey" name="value" dataType="attribute" />
+                          </nameValue>
+                          <nameValue value="" name="key" dataType="element">
+                            <nameValue idref="RiskManuScript.EffectiveDateKeyName" name="name" dataType="attribute" />
+                            <nameValue value="&lt;=" name="operator" dataType="attribute" />
+                            <nameValue idref="RiskManuScript.EffectiveDateKey" name="value" dataType="attribute" />
+                          </nameValue>
+                          <nameValue value="" name="sort" dataType="element">
+                            <nameValue idref="RiskManuScript.EffectiveDateKeyName" name="name" dataType="attribute" />
+                            <nameValue value="descending" name="direction" dataType="attribute" />
+                          </nameValue>
+                          <nameValue value="" name="sort" dataType="element">
+                            <nameValue value="version" name="name" dataType="attribute" />
+                            <nameValue value="descending" name="direction" dataType="attribute" />
+                          </nameValue>
+                        </nameValue>
+                      </nameValues>
+                    </request>
+                  </value>
                 </private>
               </object>
               <object id="SelectedLocationManuScript">
@@ -11263,39 +11460,16 @@
               </private>
               <private id="LineManuScript.RateEffectiveDateBroker" type="date" caption="temp">
                 <value>
-                  <request verb="ManuScriptBroker.listRq" get="items/item/keys/key[@name=&quot;effectiveDateNew&quot;]/@value">
-                    <onFailure value="" />
-                    <modifySession value="" />
-                    <usesSession value="" />
-                    <default value="" />
-                    <nameValues>
-                      <nameValue value="" name="keys" dataType="element">
-                        <nameValue value="" name="key" dataType="element">
-                          <nameValue value="lob" name="name" dataType="attribute" />
-                          <nameValue value="=" name="operator" dataType="attribute" />
-                          <nameValue idref="LineManuScript.LineOfBusinessKey" name="value" dataType="attribute" />
-                        </nameValue>
-                        <nameValue value="" name="key" dataType="element">
-                          <nameValue value="state" name="name" dataType="attribute" />
-                          <nameValue value="=" name="operator" dataType="attribute" />
-                          <nameValue idref="LineManuScript.StateKey" name="value" dataType="attribute" />
-                        </nameValue>
-                        <nameValue value="" name="key" dataType="element">
-                          <nameValue idref="LineManuScript.EffectiveDateKeyName" name="name" dataType="attribute" />
-                          <nameValue value="&lt;=" name="operator" dataType="attribute" />
-                          <nameValue idref="LineManuScript.EffectiveDateKey" name="value" dataType="attribute" />
-                        </nameValue>
-                        <nameValue value="" name="sort" dataType="element">
-                          <nameValue idref="LineManuScript.EffectiveDateKeyName" name="name" dataType="attribute" />
-                          <nameValue value="descending" name="direction" dataType="attribute" />
-                        </nameValue>
-                        <nameValue value="" name="sort" dataType="element">
-                          <nameValue value="version" name="name" dataType="attribute" />
-                          <nameValue value="descending" name="direction" dataType="attribute" />
-                        </nameValue>
-                      </nameValue>
-                    </nameValues>
-                  </request>
+                  <if>
+                    <condition>
+                      <comparison compare="ne">
+                        <operand idref="LineManuScript.ManuScriptIDBrokerByCarrier" type="string" />
+                        <operand type="string" value="" />
+                      </comparison>
+                    </condition>
+                    <then idref="LineManuScript.RateEffectiveDateBrokerByCarrier" />
+                    <else idref="LineManuScript.RateEffectiveDateBrokerByNonCarrier" />
+                  </if>
                 </value>
               </private>
               <private id="LineManuScript.RateEffectiveDate" type="date" caption="temp">
@@ -14865,6 +15039,7 @@
               <private id="LineManuScript.LineProductManuscriptIDBroker" type="string" caption="temp">
                 <value>
                   <request verb="CustomServer.expandRequestsRq" get="server/requests/item/@id">
+                    <responsePath value="" />
                     <onFailure value="" />
                     <modifySession value="" />
                     <usesSession value="" />
@@ -14914,6 +15089,11 @@
                         <nameValue value="http://www.w3.org/1999/XSL/Transform" name="xmlns:xsl" dataType="attribute" />
                         <nameValue value="" name="xsl:for-each" dataType="element">
                           <nameValue value="//item" name="select" dataType="attribute" />
+                          <nameValue value="" name="xsl:sort" dataType="element">
+                            <nameValue value="text" name="data-type" dataType="attribute" />
+                            <nameValue value="keys/key[@name='effectiveDateNew']/@value" name="select" dataType="attribute" />
+                            <nameValue value="descending" name="order" dataType="attribute" />
+                          </nameValue>
                           <nameValue value="" name="xsl:sort" dataType="element">
                             <nameValue value="number" name="data-type" dataType="attribute" />
                             <nameValue value="substring-before(keys/key[@name='version']/@value,'.')" name="select" dataType="attribute" />
@@ -15197,6 +15377,81 @@
                       </lookup>
                     </else>
                   </if>
+                </value>
+              </private>
+              <private id="LineManuScript.RateEffectiveDateBrokerByCarrier" type="date" caption="temp">
+                <value>
+                  <request verb="ManuScriptBroker.listRq" get="items/item/keys/key[@name=&quot;effectiveDateNew&quot;]/@value">
+                    <responsePath value="" />
+                    <onFailure value="" />
+                    <modifySession value="" />
+                    <usesSession value="" />
+                    <default value="" />
+                    <nameValues>
+                      <nameValue value="" name="keys" dataType="element">
+                        <nameValue value="" name="key" dataType="element">
+                          <nameValue value="lob" name="name" dataType="attribute" />
+                          <nameValue value="=" name="operator" dataType="attribute" />
+                          <nameValue idref="LineManuScript.LineOfBusinessKeyByCarrier" name="value" dataType="attribute" />
+                        </nameValue>
+                        <nameValue value="" name="key" dataType="element">
+                          <nameValue value="state" name="name" dataType="attribute" />
+                          <nameValue value="=" name="operator" dataType="attribute" />
+                          <nameValue idref="LineManuScript.StateKey" name="value" dataType="attribute" />
+                        </nameValue>
+                        <nameValue value="" name="key" dataType="element">
+                          <nameValue idref="LineManuScript.EffectiveDateKeyName" name="name" dataType="attribute" />
+                          <nameValue value="&lt;=" name="operator" dataType="attribute" />
+                          <nameValue idref="LineManuScript.EffectiveDateKey" name="value" dataType="attribute" />
+                        </nameValue>
+                        <nameValue value="" name="sort" dataType="element">
+                          <nameValue idref="LineManuScript.EffectiveDateKeyName" name="name" dataType="attribute" />
+                          <nameValue value="descending" name="direction" dataType="attribute" />
+                        </nameValue>
+                        <nameValue value="" name="sort" dataType="element">
+                          <nameValue value="version" name="name" dataType="attribute" />
+                          <nameValue value="descending" name="direction" dataType="attribute" />
+                        </nameValue>
+                      </nameValue>
+                    </nameValues>
+                  </request>
+                </value>
+              </private>
+              <private id="LineManuScript.RateEffectiveDateBrokerByNonCarrier" type="date" caption="temp">
+                <value>
+                  <request verb="ManuScriptBroker.listRq" get="items/item/keys/key[@name=&quot;effectiveDateNew&quot;]/@value">
+                    <onFailure value="" />
+                    <modifySession value="" />
+                    <usesSession value="" />
+                    <default value="" />
+                    <nameValues>
+                      <nameValue value="" name="keys" dataType="element">
+                        <nameValue value="" name="key" dataType="element">
+                          <nameValue value="lob" name="name" dataType="attribute" />
+                          <nameValue value="=" name="operator" dataType="attribute" />
+                          <nameValue idref="LineManuScript.LineOfBusinessKey" name="value" dataType="attribute" />
+                        </nameValue>
+                        <nameValue value="" name="key" dataType="element">
+                          <nameValue value="state" name="name" dataType="attribute" />
+                          <nameValue value="=" name="operator" dataType="attribute" />
+                          <nameValue idref="LineManuScript.StateKey" name="value" dataType="attribute" />
+                        </nameValue>
+                        <nameValue value="" name="key" dataType="element">
+                          <nameValue idref="LineManuScript.EffectiveDateKeyName" name="name" dataType="attribute" />
+                          <nameValue value="&lt;=" name="operator" dataType="attribute" />
+                          <nameValue idref="LineManuScript.EffectiveDateKey" name="value" dataType="attribute" />
+                        </nameValue>
+                        <nameValue value="" name="sort" dataType="element">
+                          <nameValue idref="LineManuScript.EffectiveDateKeyName" name="name" dataType="attribute" />
+                          <nameValue value="descending" name="direction" dataType="attribute" />
+                        </nameValue>
+                        <nameValue value="" name="sort" dataType="element">
+                          <nameValue value="version" name="name" dataType="attribute" />
+                          <nameValue value="descending" name="direction" dataType="attribute" />
+                        </nameValue>
+                      </nameValue>
+                    </nameValues>
+                  </request>
                 </value>
               </private>
             </object>
@@ -30649,6 +30904,23 @@
             </private>
           </object>
         </object>
+        <object id="AllWCStateTaxSurcharge" path="line[Type=&quot;WorkersCompensation&quot;]//stateTaxSurcharge">
+          <minOccurs value="0" />
+          <maxOccurs value="*" />
+          <nameValues schemaExclude="1" />
+          <object id="AllWCStateTaxSurchargeOutput">
+            <minOccurs value="1" />
+            <maxOccurs value="1" />
+            <public id="AllWCStateTaxSurchargeOutput.Amount" path="Amount" type="float" class="Premium">
+              <definition>
+                <caption value="All WC State Tax Surcharge Output Amount" />
+                <readOnly idref="True" />
+                <formatMask idref="FormatMask.PremiumPennies" />
+                <maxLength idref="MaxLength.fValue" />
+              </definition>
+            </public>
+          </object>
+        </object>
       </object>
       <object id="Account" path="account" abstract="1">
         <minOccurs value="1" />
@@ -32121,7 +32393,15 @@
               <private id="LocationPrivateKYTax.MinimumTax" caption="" type="float">
                 <value>
                   <if>
-                    <condition idref="PolicyPrivate.IsFlatCancel" />
+                    <condition>
+                      <comparison compare="or">
+                        <operand idref="PolicyPrivate.IsFlatCancel" type="boolean" />
+                        <comparison compare="eq">
+                          <operand idref="LocationPrivate.DaysOnPolicy" type="int" />
+                          <operand type="int" value="0" />
+                        </comparison>
+                      </comparison>
+                    </condition>
                     <then value="0" />
                     <else>
                       <calculation>
@@ -33257,6 +33537,186 @@
                 </comparison>
               </value>
             </private>
+            <private id="LocationPrivate.DateLocationAdded" caption="" type="date" path="DateLocationAdded">
+              <value>
+                <iterator type="date" scope="all" action="sum" idref="Transaction">
+                  <reference idref="TransactionInput.EffectiveDate" type="date" />
+                  <where>
+                    <comparison compare="eq">
+                      <operand idref="LocationOutputNonShredded.TransactionIDWhenAdded" type="string" />
+                      <operand idref="TransactionOutput.ID" type="string" />
+                    </comparison>
+                  </where>
+                </iterator>
+              </value>
+            </private>
+            <private id="LocationPrivate.DateLocationRemoved" caption="" type="date" path="DateLocationAdded">
+              <value>
+                <iterator type="date" scope="first" action="sum" idref="Transaction">
+                  <reference idref="TransactionInput.EffectiveDate" type="date" />
+                  <customQuery idref="LocationPrivate.DateLocationRemovedXPath" />
+                </iterator>
+              </value>
+              <misc>
+                <if>
+                  <condition>
+                    <comparison compare="eq">
+                      <operand idref="LocationPrivate.DateLocationRemoved" type="date" />
+                      <operand type="string" value="" />
+                    </comparison>
+                  </condition>
+                  <then idref="TransactionInput.ExpirationDate" />
+                </if>
+              </misc>
+            </private>
+            <private id="LocationPrivate.DateLocationRemovedXPath" caption="" type="string" path="DateLocationAdded">
+              <value>
+                <calculation>
+                  <argument op="eq" type="string" value="transactions/transaction[@id='" />
+                  <argument op="add" idref="LocationOutputNonShredded.TransactionIDWhenRemoved" type="string" />
+                  <argument op="add" type="string" value="']" />
+                </calculation>
+              </value>
+            </private>
+            <private id="LocationPrivate.DaysOnPolicy" caption="" type="int">
+              <value>
+                <dateDifference unit="days">
+                  <dateArgument idref="LocationPrivate.DateLocationRemoved" />
+                  <dateArgument idref="LocationPrivate.DateLocationAdded" />
+                </dateDifference>
+              </value>
+            </private>
+            <private id="LocationPrivate.SetPreviouslyAddedTransactionID" caption="" type="string">
+              <value idref="LocationOutputNonShredded.TransactionIDWhenAdded" />
+              <affects>
+                <reference idref="LocationOutputNonShredded.PreviouslyAddedTransactionID" effect="setValue" />
+              </affects>
+            </private>
+            <private id="LocationPrivate.IsCommercialAutoTaxValueInvalidForLocation" caption="" type="boolean">
+              <value>
+                <comparison compare="eq">
+                  <operand idref="PolicyPrivate.IsCommercialAutoSelected" type="boolean" />
+                  <operand idref="False" type="int" />
+                </comparison>
+              </value>
+            </private>
+            <private id="LocationPrivate.IsGeneralLiabilityTaxValueInvalidForLocation" caption="" type="boolean">
+              <value>
+                <comparison compare="eq">
+                  <operand idref="PolicyPrivate.IsCommercialGeneralLiabilitySelected" type="boolean" />
+                  <operand idref="False" type="int" />
+                </comparison>
+              </value>
+            </private>
+            <private id="LocationPrivate.ClearCommercialAutoTaxValues" caption="" type="float">
+              <value value="0" />
+              <affects>
+                <reference idref="LocationOutput.TaxCityChangeAmountCommercialAuto" effect="setValue" />
+                <reference idref="LocationOutput.TaxCityWrittenAmountCommercialAuto" effect="setValue" />
+                <reference idref="LocationOutput.TaxCountyChangeAmountCommercialAuto" effect="setValue" />
+                <reference idref="LocationOutput.TaxCountyWrittenAmountCommercialAuto" effect="setValue" />
+                <reference idref="LocationOutput.TaxPremiumCommercialAuto" effect="setValue" />
+              </affects>
+            </private>
+            <private id="LocationPrivate.ClearGeneralLiabilityTaxValues" caption="" type="float">
+              <value value="0" />
+              <affects>
+                <reference idref="LocationOutput.TaxCityChangeAmountGeneralLiability" effect="setValue" />
+                <reference idref="LocationOutput.TaxCityWrittenAmountGeneralLiability" effect="setValue" />
+                <reference idref="LocationOutput.TaxCountyChangeAmountGeneralLiability" effect="setValue" />
+                <reference idref="LocationOutput.TaxCountyWrittenAmountGeneralLiability" effect="setValue" />
+                <reference idref="LocationOutput.TaxPremiumGeneralLiability" effect="setValue" />
+              </affects>
+            </private>
+            <private id="LocationPrivate.ClearBusinessOwnersTaxValues" caption="" type="float">
+              <value value="0" />
+              <affects>
+                <reference idref="LocationOutput.TaxCityChangeAmountBusinessOwners" effect="setValue" />
+                <reference idref="LocationOutput.TaxCityWrittenAmountBusinessOwners" effect="setValue" />
+                <reference idref="LocationOutput.TaxCountyChangeAmountBusinessOwners" effect="setValue" />
+                <reference idref="LocationOutput.TaxCountyWrittenAmountBusinessOwners" effect="setValue" />
+                <reference idref="LocationOutput.TaxPremiumBusinessOwners" effect="setValue" />
+              </affects>
+            </private>
+            <private id="LocationPrivate.ClearCrimeTaxValues" caption="" type="float">
+              <value value="0" />
+              <affects>
+                <reference idref="LocationOutput.TaxCityChangeAmountCrime" effect="setValue" />
+                <reference idref="LocationOutput.TaxCityWrittenAmountCrime" effect="setValue" />
+                <reference idref="LocationOutput.TaxCountyChangeAmountCrime" effect="setValue" />
+                <reference idref="LocationOutput.TaxCountyWrittenAmountCrime" effect="setValue" />
+                <reference idref="LocationOutput.TaxPremiumCrime" effect="setValue" />
+              </affects>
+            </private>
+            <private id="LocationPrivate.ClearInlandMarineTaxValues" caption="" type="float">
+              <value value="0" />
+              <affects>
+                <reference idref="LocationOutput.TaxCityChangeAmountInlandMarine" effect="setValue" />
+                <reference idref="LocationOutput.TaxCityWrittenAmountInlandMarine" effect="setValue" />
+                <reference idref="LocationOutput.TaxCountyChangeAmountInlandMarine" effect="setValue" />
+                <reference idref="LocationOutput.TaxCountyWrittenAmountInlandMarine" effect="setValue" />
+                <reference idref="LocationOutput.TaxPremiumInlandMarine" effect="setValue" />
+              </affects>
+            </private>
+            <private id="LocationPrivate.ClearInlandMarineAAISTaxValues" caption="" type="float">
+              <value value="0" />
+              <affects>
+                <reference idref="LocationOutput.TaxCityChangeAmountInlandMarineAAIS" effect="setValue" />
+                <reference idref="LocationOutput.TaxCityWrittenAmountInlandMarineAAIS" effect="setValue" />
+                <reference idref="LocationOutput.TaxCountyChangeAmountInlandMarineAAIS" effect="setValue" />
+                <reference idref="LocationOutput.TaxCountyWrittenAmountInlandMarineAAIS" effect="setValue" />
+              </affects>
+            </private>
+            <private id="LocationPrivate.ClearPropertyTaxValues" caption="" type="float">
+              <value value="0" />
+              <affects>
+                <reference idref="LocationOutput.TaxCityChangeAmountProperty" effect="setValue" />
+                <reference idref="LocationOutput.TaxCityWrittenAmountProperty" effect="setValue" />
+                <reference idref="LocationOutput.TaxCountyChangeAmountProperty" effect="setValue" />
+                <reference idref="LocationOutput.TaxCountyWrittenAmountProperty" effect="setValue" />
+                <reference idref="LocationOutput.TaxPremiumProperty" effect="setValue" />
+              </affects>
+            </private>
+            <private id="LocationPrivate.IsBusinessOwnersTaxValueInvalidForLocation" caption="" type="boolean">
+              <value>
+                <comparison compare="eq">
+                  <operand idref="PolicyPrivate.IsCommercialBusinessOwnersSelected" type="boolean" />
+                  <operand idref="False" type="int" />
+                </comparison>
+              </value>
+            </private>
+            <private id="LocationPrivate.IsCrimeTaxValueInvalidForLocation" caption="" type="boolean">
+              <value>
+                <comparison compare="eq">
+                  <operand idref="PolicyPrivate.IsCommercialCrimeSelected" type="boolean" />
+                  <operand idref="False" type="int" />
+                </comparison>
+              </value>
+            </private>
+            <private id="LocationPrivate.IsPropertyTaxValueInvalidForLocation" caption="" type="boolean">
+              <value>
+                <comparison compare="eq">
+                  <operand idref="PolicyPrivate.IsCommercialPropertySelected" type="boolean" />
+                  <operand idref="False" type="int" />
+                </comparison>
+              </value>
+            </private>
+            <private id="LocationPrivate.IsInlandMarineTaxValueInvalidForLocation" caption="" type="boolean">
+              <value>
+                <comparison compare="eq">
+                  <operand idref="PolicyPrivate.IsCommercialInlandMarineSelected" type="boolean" />
+                  <operand idref="False" type="int" />
+                </comparison>
+              </value>
+            </private>
+            <private id="LocationPrivate.IsInlandMarineAAISTaxValueInvalidForLocation" caption="" type="boolean">
+              <value>
+                <comparison compare="eq">
+                  <operand idref="PolicyPrivate.IsCommercialInlandMarineAAISSelected" type="boolean" />
+                  <operand idref="False" type="int" />
+                </comparison>
+              </value>
+            </private>
           </object>
           <object id="LocationOutput">
             <minOccurs value="1" />
@@ -33386,6 +33846,53 @@
                       <then idref="PolicyOutputNonShredded.AvailableNumberIDForCurrentTerm" />
                     </if>
                   </misc>
+                </rules>
+              </public>
+              <public id="LocationOutputNonShredded.PreviouslyAddedTransactionID" path="PreviouslyAddedTransactionID" type="string">
+                <definition>
+                  <caption value="Previously Added Transaction ID" />
+                </definition>
+                <rules>
+                  <misc>
+                    <if>
+                      <condition idref="ConstantsPolicyAdminProcessing.IsNewTerm" />
+                      <then value="" />
+                    </if>
+                  </misc>
+                </rules>
+              </public>
+              <public id="LocationOutputNonShredded.TransactionIDWhenRemoved" path="TransactionIDWhenRemoved" type="string">
+                <definition>
+                  <caption value="Location Output Non Shredded Transaction ID When Removed" />
+                </definition>
+                <rules>
+                  <nonRating value="1" />
+                  <misc>
+                    <if>
+                      <condition idref="ConstantsPolicyAdminProcessing.IsNewTerm" />
+                      <then value="" />
+                    </if>
+                  </misc>
+                  <value>
+                    <if>
+                      <condition>
+                        <comparison compare="and">
+                          <comparison compare="and">
+                            <comparison compare="eq">
+                              <operand idref="LocationOutputNonShredded.TransactionIDWhenRemoved" type="string" />
+                              <operand type="string" value="" />
+                            </comparison>
+                            <operand idref="LocationOutputNonShredded.Deleted" type="boolean" />
+                          </comparison>
+                          <comparison compare="ne">
+                            <operand idref="LocationOutputNonShredded.PreviouslyAddedTransactionID" type="string" />
+                            <operand type="string" value="" />
+                          </comparison>
+                        </comparison>
+                      </condition>
+                      <then idref="PolicyOutputNonShredded.CurrentTransactionID" />
+                    </if>
+                  </value>
                 </rules>
               </public>
             </object>
@@ -36049,6 +36556,13 @@
                   </nameValue>
                 </nameValues>
               </request>
+            </value>
+          </private>
+          <private id="AccountPrivate.LocationPreviouslyAddedTransactionIDSetup" caption="" type="string">
+            <value>
+              <iterator type="string" scope="all" action="sum" includeDeleted="1" idref="Location">
+                <reference idref="LocationPrivate.SetPreviouslyAddedTransactionID" type="string" />
+              </iterator>
             </value>
           </private>
         </object>
@@ -45479,6 +45993,7 @@
           <reference idref="AccountPrivate.AddLocationCurrentTransactionIDOnNewCheck" effect="postEffect" />
           <reference idref="AccountPrivate.AddRiskCurrentTransactionIDOnRenew" effect="postEffect" />
           <reference idref="AccountPrivate.DeleteAddedCurrentTransactionTransform" effect="postEffect" />
+          <reference idref="AccountPrivate.LocationPreviouslyAddedTransactionIDSetup" effect="postEffect" />
           <reference idref="PolicyPrivate.SetGroupNumbersAtIssueCheck" effect="postEffect" />
           <reference idref="PolicyAdminPrivate.ProductTransactionCommit" effect="postEffect" />
           <reference idref="PolicyPrivate.InitializePolicyFormsManuScriptIDsCheck" effect="postEffect" />
