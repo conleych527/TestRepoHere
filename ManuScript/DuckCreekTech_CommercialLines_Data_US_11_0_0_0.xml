@@ -29838,6 +29838,7 @@
           <maxOccurs value="1" />
           <descriptors>
             <descriptor code="Premium" />
+            <descriptor code="Blanket" />
           </descriptors>
           <object id="AllCoveragesShare" path="//coverage" share="1">
             <minOccurs value="0" />
@@ -29981,6 +29982,54 @@
                 </affects>
                 <value value="0" />
               </private>
+            </object>
+            <object id="StatCodeRatingGroupProportion" comment="Commercial Property Stat Code Rating Group Proportion Logic">
+              <minOccurs value="1" />
+              <maxOccurs value="1" />
+              <public id="StatCodeRatingGroupProportion.BlanketPremium" path="statCode[Type=&quot;RatingGroupChangeProportion&quot;]/BlanketPremium" type="float" class="Blanket" comment="Commercial Property Stat Code Rating Group Proportion Logic">
+                <definition>
+                  <caption value="Stat Code Rating Group Proportion Blanket Premium" />
+                </definition>
+              </public>
+              <public id="StatCodeRatingGroupProportion.Change" path="statCode[Type=&quot;RatingGroupChangeProportion&quot;]/change" type="float">
+                <definition>
+                  <caption value="Stat Code Rating Group Proportion Change" />
+                </definition>
+              </public>
+              <public id="StatCodeRatingGroupProportion.Written" path="statCode[Type=&quot;RatingGroupChangeProportion&quot;]/written" type="float">
+                <definition>
+                  <caption value="Stat Code Rating Group Proportion Written" />
+                </definition>
+              </public>
+              <public id="StatCodeRatingGroupProportion.FValue" path="statCode[Type=&quot;RatingGroupChangeProportion&quot;]/fValue" type="float">
+                <definition>
+                  <caption value="F Value" />
+                </definition>
+              </public>
+            </object>
+            <object id="StatCodeBlanketProportion" comment="Businessowners Stat Code Blanket proportion logic">
+              <minOccurs value="1" />
+              <maxOccurs value="1" />
+              <public id="StatCodeBlanketProportion.BlanketPremium" path="statCode[Type=&quot;BlanketChangeProportion&quot;]/BlanketPremium" type="float" class="Blanket" comment="Businessowners Stat Code Blanket proportion logic">
+                <definition>
+                  <caption value="Stat Code Blanket Proportion Blanket Premium" />
+                </definition>
+              </public>
+              <public id="StatCodeBlanketProportion.Change" path="statCode[Type=&quot;BlanketChangeProportion&quot;]/change" type="float">
+                <definition>
+                  <caption value="Stat Code Blanket Proportion Change" />
+                </definition>
+              </public>
+              <public id="StatCodeBlanketProportion.FValue" path="statCode[Type=&quot;RatingGroupChangeProportion&quot;]/fValue" type="float">
+                <definition>
+                  <caption value="Stat Code Blanket ProportionF Value" />
+                </definition>
+              </public>
+              <public id="StatCodeBlanketProportion.Written" path="statCode[Type=&quot;BlanketChangeProportion&quot;]/written" type="float">
+                <definition>
+                  <caption value="Stat Code Blanket Proportion Written" />
+                </definition>
+              </public>
             </object>
           </object>
         </object>
