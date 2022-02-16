@@ -9570,6 +9570,7 @@
                           <argument op="add" idref="MIAutomobileTheftPreventionAuthorityAssessmentOutput.AmountWritten" type="float" />
                           <argument op="add" idref="NCCommercialAutoLossRecoupmentSurchargeOutput.AmountWritten" type="float" />
                           <argument op="add" idref="FLInsuranceGuarantyAssociationAssessmentOutput.AmountWritten" type="float" />
+                          <argument op="add" idref="COHazardMitigationFeeOutput.AmountWritten" type="float" />
                         </calculation>
                       </else>
                     </if>
@@ -9618,6 +9619,7 @@
                           <argument op="add" idref="MIAutomobileTheftPreventionAuthorityAssessmentOutput.AmountChange" type="float" />
                           <argument op="add" idref="NCCommercialAutoLossRecoupmentSurchargeOutput.AmountChange" type="float" />
                           <argument op="add" idref="FLInsuranceGuarantyAssociationAssessmentOutput.AmountChange" type="float" />
+                          <argument op="add" idref="COHazardMitigationFeeOutput.AmountChange" type="float" />
                         </calculation>
                       </else>
                     </if>
@@ -9663,6 +9665,7 @@
                           <argument op="add" idref="MIAutomobileTheftPreventionAuthorityAssessmentOutput.Amount" type="float" />
                           <argument op="add" idref="NCCommercialAutoLossRecoupmentSurchargeOutput.Amount" type="float" />
                           <argument op="add" idref="FLInsuranceGuarantyAssociationAssessmentOutput.Amount" type="float" />
+                          <argument op="add" idref="COHazardMitigationFeeOutput.Amount" type="float" />
                         </calculation>
                       </else>
                     </if>
@@ -15039,7 +15042,6 @@
               <private id="LineManuScript.LineProductManuscriptIDBroker" type="string" caption="temp">
                 <value>
                   <request verb="CustomServer.expandRequestsRq" get="server/requests/item/@id">
-                    <responsePath value="" />
                     <onFailure value="" />
                     <modifySession value="" />
                     <usesSession value="" />
@@ -15089,11 +15091,6 @@
                         <nameValue value="http://www.w3.org/1999/XSL/Transform" name="xmlns:xsl" dataType="attribute" />
                         <nameValue value="" name="xsl:for-each" dataType="element">
                           <nameValue value="//item" name="select" dataType="attribute" />
-                          <nameValue value="" name="xsl:sort" dataType="element">
-                            <nameValue value="text" name="data-type" dataType="attribute" />
-                            <nameValue value="keys/key[@name='effectiveDateNew']/@value" name="select" dataType="attribute" />
-                            <nameValue value="descending" name="order" dataType="attribute" />
-                          </nameValue>
                           <nameValue value="" name="xsl:sort" dataType="element">
                             <nameValue value="number" name="data-type" dataType="attribute" />
                             <nameValue value="substring-before(keys/key[@name='version']/@value,'.')" name="select" dataType="attribute" />
@@ -17756,6 +17753,23 @@
                 </calculation>
               </value>
             </private>
+            <private id="LinePrivate.IsCOHazardMitigationFeeAvailable" caption="" type="boolean">
+              <value>
+                <comparison compare="and">
+                  <operand idref="AccountPrivate.IsAnyLocationCOIncludeDeleted" type="boolean" />
+                  <comparison compare="or">
+                    <comparison compare="eq">
+                      <operand idref="LineOutput.Type" type="string" />
+                      <operand type="string" value="Property" />
+                    </comparison>
+                    <comparison compare="eq">
+                      <operand idref="LineOutput.Type" type="string" />
+                      <operand type="string" value="BusinessOwners" />
+                    </comparison>
+                  </comparison>
+                </comparison>
+              </value>
+            </private>
           </object>
           <object id="LineOutput" abstract="1">
             <minOccurs value="1" />
@@ -17960,6 +17974,7 @@
                         <argument op="add" idref="LineKYMunicipalTaxOutput.Amount" type="float" />
                         <argument op="add" idref="LineKYPremiumSurchargePrivate.Total" type="float" />
                         <argument op="add" idref="LineFLInsuranceGuarantyAssociationAssessmentPrivate.Total" type="float" />
+                        <argument op="add" idref="LineCOHazardMitigationFeePrivate.Total" type="float" />
                       </calculation>
                     </value>
                   </rules>
@@ -17978,6 +17993,7 @@
                         <argument op="add" idref="LineKYMunicipalTaxPrivate.TotalWritten" type="float" />
                         <argument op="add" idref="LineKYPremiumSurchargePrivate.TotalWritten" type="float" />
                         <argument op="add" idref="LineFLInsuranceGuarantyAssociationAssessmentPrivate.TotalWritten" type="float" />
+                        <argument op="add" idref="LineCOHazardMitigationFeePrivate.TotalWritten" type="float" />
                       </calculation>
                     </value>
                     <affects>
@@ -17999,6 +18015,7 @@
                         <argument op="add" idref="LineKYMunicipalTaxOutput.Change" type="float" />
                         <argument op="add" idref="LineKYPremiumSurchargePrivate.TotalChange" type="float" />
                         <argument op="add" idref="LineFLInsuranceGuarantyAssociationAssessmentPrivate.TotalChange" type="float" />
+                        <argument op="add" idref="LineCOHazardMitigationFeePrivate.TotalChange" type="float" />
                       </calculation>
                     </value>
                   </rules>
@@ -24793,6 +24810,298 @@
                 </object>
               </object>
             </object>
+            <object id="LineCOHazardMitigationFee">
+              <minOccurs value="1" />
+              <maxOccurs value="1" />
+              <object id="LineCOHazardMitigationFeeOutput">
+                <minOccurs value="1" />
+                <maxOccurs value="1" />
+                <public id="LineCOHazardMitigationFeeOutput.Amount" path="lineStateTaxSurcharge[Type=&quot;COHazardMitigationFee&quot;]/fValue" type="float" class="Premium" alwaysRun="1">
+                  <definition>
+                    <caption value="CO Hazard Mitigation Fee Amount" />
+                    <readOnly idref="True" />
+                    <formatMask idref="FormatMask.PremiumPenniesDisplay" />
+                    <maxLength idref="MaxLength.fValue" />
+                  </definition>
+                  <rules>
+                    <value idref="LineCOHazardMitigationFeePrivate.Total" />
+                    <affects>
+                      <reference idref="LineCOHazardMitigationFeeOutput_Config.Indicator" effect="postEffect" />
+                    </affects>
+                  </rules>
+                  <worksheet>
+                    <caption value="Amount" />
+                    <formatMask idref="FormatMask.PremiumPenniesDisplay" />
+                  </worksheet>
+                </public>
+                <public id="LineCOHazardMitigationFeeOutput.Change" path="lineStateTaxSurcharge[Type=&quot;COHazardMitigationFee&quot;]/@change" type="float">
+                  <definition>
+                    <caption value="Line CO Hazard Mitigation Fee Output Change" />
+                    <readOnly idref="True" />
+                    <formatMask idref="FormatMask.PremiumPenniesDisplay" />
+                    <maxLength idref="MaxLength.fValue" />
+                  </definition>
+                </public>
+                <public id="LineCOHazardMitigationFeeOutput.TaxState" path="lineStateTaxSurcharge[Type=&quot;COHazardMitigationFee&quot;]/TaxState" type="string">
+                  <definition>
+                    <caption value="Line CO Hazard Mitigation Fee Output Tax State" />
+                    <readOnly idref="True" />
+                  </definition>
+                  <rules>
+                    <default value="CO" />
+                  </rules>
+                </public>
+                <public id="LineCOHazardMitigationFeeOutput.Written" path="lineStateTaxSurcharge[Type=&quot;COHazardMitigationFee&quot;]/@written" type="float" alwaysRun="1">
+                  <definition>
+                    <caption value="Line CO Hazard Mitigation Fee Output Written" />
+                    <readOnly idref="True" />
+                    <formatMask idref="FormatMask.PremiumPenniesDisplay" />
+                    <maxLength idref="MaxLength.fValue" />
+                  </definition>
+                  <rules>
+                    <value idref="LineCOHazardMitigationFeeOutput_Config.Written" />
+                    <affects>
+                      <reference idref="LineCOHazardMitigationFeeOutput_Config.Indicator" effect="postEffect" />
+                    </affects>
+                  </rules>
+                </public>
+              </object>
+              <object id="LineCOHazardMitigationFeePrivate">
+                <minOccurs value="1" />
+                <maxOccurs value="1" />
+                <private id="LineCOHazardMitigationFeePrivate.FlatCharge" caption="" type="boolean">
+                  <value value="1" />
+                </private>
+                <private id="LineCOHazardMitigationFeePrivate.FullyEarned" caption="" type="boolean">
+                  <value>
+                    <iterator type="boolean" scope="first" action="count" includeDeleted="1" idref="Location">
+                      <where>
+                        <comparison compare="and">
+                          <operand idref="LocationPrivate.StateIsCO" type="boolean" />
+                          <comparison compare="ne">
+                            <operand idref="LocationPrivate.DateLocationAdded" type="date" />
+                            <operand idref="LocationPrivate.DateLocationRemoved" type="date" />
+                          </comparison>
+                        </comparison>
+                      </where>
+                    </iterator>
+                  </value>
+                </private>
+                <private id="LineCOHazardMitigationFeePrivate.Fee" caption="" type="float">
+                  <value>
+                    <lookup>
+                      <tableRef value="(custom defined)" idref="LineCOHazardMitigationFeePrivate.TableName" />
+                      <manuscriptName idref="LineCOHazardMitigationFeePrivate.ManuScriptID" />
+                      <fieldRef value="Value" />
+                      <onFailure value="0" />
+                      <keyRef type="string" value="Fee" name="Type" />
+                    </lookup>
+                  </value>
+                  <worksheet>
+                    <caption value="Fee" />
+                    <formatMask idref="FormatMask.PremiumPenniesDisplay" />
+                  </worksheet>
+                </private>
+                <private id="LineCOHazardMitigationFeePrivate.Total" caption="" type="float">
+                  <value>
+                    <if>
+                      <condition>
+                        <comparison compare="or">
+                          <comparison compare="or">
+                            <comparison compare="eq">
+                              <operand idref="AccountPrivate.IsAnyLocationCO" type="boolean" />
+                              <operand idref="False" type="int" />
+                            </comparison>
+                            <comparison compare="eq">
+                              <operand idref="LinePrivate.StopLineRating" type="boolean" />
+                              <operand idref="True" type="int" />
+                            </comparison>
+                          </comparison>
+                          <comparison compare="eq">
+                            <operand idref="LineInputNonShredded.LineRemovedMidTerm" type="boolean" />
+                            <operand idref="True" type="int" />
+                          </comparison>
+                        </comparison>
+                      </condition>
+                      <then value="0" />
+                      <else>
+                        <calculation>
+                          <argument op="eq" idref="LineCOHazardMitigationFeePrivate.Fee" type="float" />
+                        </calculation>
+                      </else>
+                    </if>
+                  </value>
+                  <affects>
+                    <reference idref="LineCOHazardMitigationFeeOutput.Amount" effect="setValue" />
+                  </affects>
+                  <worksheet>
+                    <caption value="Total" />
+                    <formatMask idref="FormatMask.PremiumPenniesDisplay" />
+                  </worksheet>
+                </private>
+                <private id="LineCOHazardMitigationFeePrivate.TotalChange" caption="" type="float">
+                  <value>
+                    <if>
+                      <condition>
+                        <comparison compare="or">
+                          <comparison compare="eq">
+                            <operand idref="AccountPrivate.IsAnyLocationCOIncludeDeleted" type="boolean" />
+                            <operand idref="False" type="int" />
+                          </comparison>
+                          <comparison compare="eq">
+                            <operand idref="LinePrivate.StopLineRating" type="boolean" />
+                            <operand idref="True" type="int" />
+                          </comparison>
+                        </comparison>
+                      </condition>
+                      <then value="0" />
+                      <else>
+                        <calculation>
+                          <argument op="eq" idref="LineCOHazardMitigationFeeOutput_Config.Change" type="float" />
+                        </calculation>
+                      </else>
+                    </if>
+                  </value>
+                </private>
+                <private id="LineCOHazardMitigationFeePrivate.TotalWritten" caption="" type="float">
+                  <value>
+                    <if>
+                      <condition>
+                        <comparison compare="or">
+                          <comparison compare="eq">
+                            <operand idref="AccountPrivate.IsAnyLocationCOIncludeDeleted" type="boolean" />
+                            <operand idref="False" type="int" />
+                          </comparison>
+                          <comparison compare="eq">
+                            <operand idref="LinePrivate.StopLineRating" type="boolean" />
+                            <operand idref="True" type="int" />
+                          </comparison>
+                        </comparison>
+                      </condition>
+                      <then value="0" />
+                      <else>
+                        <calculation>
+                          <argument op="eq" idref="LineCOHazardMitigationFeeOutput.Written" type="float" />
+                        </calculation>
+                      </else>
+                    </if>
+                  </value>
+                  <worksheet>
+                    <caption value="Total Written" />
+                    <formatMask idref="FormatMask.PremiumPenniesDisplay" />
+                  </worksheet>
+                  <affects>
+                    <reference idref="LineCOHazardMitigationFeeOutput_Config.Written" effect="postEffect" />
+                  </affects>
+                </private>
+                <private id="LineCOHazardMitigationFeePrivate.TableName" caption="" type="string">
+                  <value value="COHazardMitigationFee" />
+                </private>
+                <private id="LineCOHazardMitigationFeePrivate.ManuScriptID" caption="" type="string" alwaysRun="1">
+                  <value>
+                    <iterator type="string" scope="first" action="sum" includeDeleted="1" idref="Location">
+                      <reference idref="LocationTaxManuscript.ManuScriptID" type="string" />
+                      <customQuery idref="AccountPrivate.IsAnyLocationCOXPath" />
+                    </iterator>
+                  </value>
+                </private>
+                <private id="LineCOHazardMitigationFeePrivate.Indicator" caption="" type="boolean">
+                  <value>
+                    <comparison compare="gt">
+                      <operand idref="LineCOHazardMitigationFeeOutput.Amount" type="float" />
+                      <operand type="int" value="0" />
+                    </comparison>
+                  </value>
+                </private>
+              </object>
+              <object id="LineCOHazardMitigationFee_Config" path="lineStateTaxSurcharge[Type=&quot;COHazardMitigationFee&quot;]">
+                <minOccurs value="1" />
+                <maxOccurs value="1" />
+                <object id="LineCOHazardMitigationFeeOutput_Config">
+                  <minOccurs value="1" />
+                  <maxOccurs value="1" />
+                  <public id="LineCOHazardMitigationFeeOutput_Config.Amount" path="fValue" type="float">
+                    <definition>
+                      <caption value="Line CO Hazard Mitigation Fee Output_ Config Amount" />
+                    </definition>
+                    <rules>
+                      <value>
+                        <if>
+                          <condition>
+                            <comparison compare="eq">
+                              <operand idref="LineCOHazardMitigationFeeOutput_Config.Indicator" type="boolean" />
+                              <operand idref="False" type="int" />
+                            </comparison>
+                          </condition>
+                          <then value="0" />
+                          <else>
+                            <calculation>
+                              <argument op="eq" idref="LineCOHazardMitigationFeeOutput.Amount" type="float" />
+                            </calculation>
+                          </else>
+                        </if>
+                      </value>
+                    </rules>
+                  </public>
+                  <public id="LineCOHazardMitigationFeeOutput_Config.Change" path="change" type="float">
+                    <definition>
+                      <caption value="Line CO Hazard Mitigation Fee Output_ Config Change" />
+                      <readOnly idref="True" />
+                      <formatMask idref="FormatMask.PremiumPenniesDisplay" />
+                      <maxLength idref="MaxLength.fValue" />
+                    </definition>
+                  </public>
+                  <public id="LineCOHazardMitigationFeeOutput_Config.FullyEarnedIndicator" path="FullyEarnedIndicator" type="boolean">
+                    <definition>
+                      <caption value="Line CO Hazard Mitigation Fee Output_ Config Fully Earned Indicator" />
+                    </definition>
+                    <rules>
+                      <value idref="LineCOHazardMitigationFeePrivate.FullyEarned" />
+                    </rules>
+                  </public>
+                  <public id="LineCOHazardMitigationFeeOutput_Config.Indicator" path="Indicator" type="boolean" alwaysRun="1">
+                    <definition>
+                      <caption value="Line CO Hazard Mitigation Fee Output_ Config Indicator" />
+                    </definition>
+                    <rules>
+                      <default idref="False" />
+                      <value idref="LineCOHazardMitigationFeePrivate.Indicator" />
+                    </rules>
+                  </public>
+                  <public id="LineCOHazardMitigationFeeOutput_Config.Written" path="written" type="float">
+                    <definition>
+                      <caption value="Line CO Hazard Mitigation Fee Output_ Config Written" />
+                      <readOnly idref="True" />
+                      <formatMask idref="FormatMask.PremiumPenniesDisplay" />
+                      <maxLength idref="MaxLength.fValue" />
+                    </definition>
+                    <rules>
+                      <value>
+                        <written useShared="0" round="100" roundType="round">
+                          <writtenRef idref="LineCOHazardMitigationFeeOutput_Config.Amount" type="float" infoType="term" />
+                          <writtenInfo idref="WrittenPremiumSharedConfiguration.MinimumPremiumDefault" type="int" infoType="minimum" />
+                          <writtenInfo idref="LineCOHazardMitigationFeeOutput_Config.FullyEarnedIndicator" type="boolean" infoType="fullyEarned" />
+                          <writtenInfo idref="LineCOHazardMitigationFeePrivate.FlatCharge" type="boolean" infoType="flatCharge" />
+                          <writtenInfo type="int" value="1" infoType="clearPremIfDeleted" />
+                          <writtenRefPath idref="WrittenPremiumSharedConfiguration.PriorTermPath" type="string" infoType="priorTerm" useXPath="1" />
+                          <writtenRefPath idref="WrittenPremiumSharedConfiguration.PriorWrittenPath" type="string" infoType="priorWritten" useXPath="1" />
+                          <writtenRefPath idref="WrittenPremiumSharedConfiguration.ChangePath" type="string" infoType="charge" useXPath="1" />
+                          <writtenRef idref="PolicyInput.EffectiveDate" type="date" infoType="effDate" />
+                          <writtenRef idref="PolicyInput.ExpirationDate" type="date" infoType="exDate" />
+                          <writtenRef idref="WrittenPremiumSharedConfiguration.CurrentTransEffDate" type="date" infoType="transDate" />
+                          <writtenRef idref="ConstantsPolicyAdminProcessing.ProRateType" type="int" infoType="proRateType" />
+                          <writtenInfo idref="WrittenPremiumSharedConfiguration.ShortRateFactor" type="float" infoType="shortRate" />
+                          <writtenInfo idref="WrittenPremiumSharedConfiguration.ProrateRoundingFactor" type="int" infoType="precision" />
+                        </written>
+                      </value>
+                    </rules>
+                    <descriptors>
+                      <descriptor code="Minimum" />
+                    </descriptors>
+                  </public>
+                </object>
+              </object>
+            </object>
           </object>
         </object>
         <object id="Forms">
@@ -28048,6 +28357,9 @@
                 <subtotal idref="LineFLInsuranceGuarantyAssociationAssessmentOutput_Config.Written" type="float" subtotalRef="FLInsuranceGuarantyAssociationAssessmentOutputNonShredded.AmountWrittenBeforeRounding" validRef="AccountPrivate.IsAnyLocationFLIncludeDeleted" />
                 <subtotal idref="LineFLInsuranceGuarantyAssociationAssessmentOutput_Config.Change" type="float" subtotalRef="FLInsuranceGuarantyAssociationAssessmentOutputNonShredded.AmountChangeBeforeRounding" validRef="AccountPrivate.IsAnyLocationFLIncludeDeleted" />
                 <subtotal idref="LineFLInsuranceGuarantyAssociationAssessmentOutput.Amount" type="float" subtotalRef="FLInsuranceGuarantyAssociationAssessmentOutputNonShredded.AmountBeforeRounding" validRef="AccountPrivate.IsAnyLocationFLIncludeDeleted" />
+                <subtotal idref="LineCOHazardMitigationFeeOutput_Config.Written" type="float" subtotalRef="COHazardMitigationFeeOutputNonShredded.AmountWrittenBeforeRounding" validRef="LinePrivate.IsCOHazardMitigationFeeAvailable" />
+                <subtotal idref="LineCOHazardMitigationFeeOutput_Config.Change" type="float" subtotalRef="COHazardMitigationFeeOutputNonShredded.AmountChangeBeforeRounding" validRef="LinePrivate.IsCOHazardMitigationFeeAvailable" />
+                <subtotal idref="LineCOHazardMitigationFeeOutput.Amount" type="float" subtotalRef="COHazardMitigationFeeOutputNonShredded.AmountBeforeRounding" validRef="LinePrivate.IsCOHazardMitigationFeeAvailable" />
                 <customQuery idref="PolicyPrivate.SelectedLineXPath" />
               </iterator>
             </value>
@@ -28125,6 +28437,9 @@
               <reference idref="FLInsuranceGuarantyAssociationAssessmentOutput.Amount" effect="postEffect" />
               <reference idref="FLInsuranceGuarantyAssociationAssessmentOutput.AmountChange" effect="postEffect" />
               <reference idref="FLInsuranceGuarantyAssociationAssessmentOutput.AmountWritten" effect="postEffect" />
+              <reference idref="COHazardMitigationFeeOutput.Amount" effect="postEffect" />
+              <reference idref="COHazardMitigationFeeOutput.AmountChange" effect="postEffect" />
+              <reference idref="COHazardMitigationFeeOutput.AmountWritten" effect="postEffect" />
             </affects>
           </private>
           <object id="NJPropertyLiabilityInsuranceGuarantyAssociationSurcharge" path="stateTaxSurcharge[Type=&quot;NJPropertyLiabilityInsuranceGuarantyAssociationSurcharge&quot; and Scope=&quot;Surcharge&quot;]">
@@ -30339,6 +30654,105 @@
             <object id="FLInsuranceGuarantyAssociationAssessmentPrivate">
               <minOccurs value="1" />
               <maxOccurs value="1" />
+            </object>
+          </object>
+          <object id="COHazardMitigationFee" path="stateTaxSurcharge[Type=&quot;COHazardMitigationFee&quot; and Scope=&quot;Fee&quot;]">
+            <minOccurs value="1" />
+            <maxOccurs value="1" />
+            <object id="COHazardMitigationFeeOutput">
+              <minOccurs value="1" />
+              <maxOccurs value="1" />
+              <public id="COHazardMitigationFeeOutput.Amount" path="Amount" type="float">
+                <definition>
+                  <caption value="CO Hazard Mitigation Fee Output Amount" />
+                  <maxLength idref="MaxLength.fValue" />
+                  <formatMask idref="FormatMask.PremiumPennies" />
+                </definition>
+                <rules>
+                  <value>
+                    <calculation>
+                      <argument op="eq" idref="COHazardMitigationFeeOutputNonShredded.AmountBeforeRounding" type="float" />
+                      <argument op="multiply" round="100" roundType="round" type="int" value="1" />
+                    </calculation>
+                  </value>
+                  <affects>
+                    <reference idref="COHazardMitigationFeeOutput.Indicator" effect="postEffect" />
+                  </affects>
+                </rules>
+              </public>
+              <public path="change" type="float" class="excludeInChangeSummary" id="COHazardMitigationFeeOutput.AmountChange">
+                <definition>
+                  <caption value="CO Hazard Mitigation Fee Output Amount Change" />
+                  <maxLength idref="MaxLength.Premium" />
+                  <formatMask idref="FormatMask.PremiumPennies" />
+                  <readOnly idref="True" />
+                </definition>
+                <rules>
+                  <value>
+                    <calculation>
+                      <argument op="eq" idref="COHazardMitigationFeeOutputNonShredded.AmountChangeBeforeRounding" type="float" />
+                      <argument op="multiply" round="100" roundType="round" type="int" value="1" />
+                    </calculation>
+                  </value>
+                </rules>
+              </public>
+              <public path="written" type="float" class="excludeInChangeSummary" id="COHazardMitigationFeeOutput.AmountWritten">
+                <definition>
+                  <caption value="CO Hazard Mitigation Fee Output Amount Written" />
+                  <maxLength idref="MaxLength.Premium" />
+                  <formatMask idref="FormatMask.PremiumPennies" />
+                  <readOnly idref="True" />
+                </definition>
+                <rules>
+                  <value>
+                    <calculation>
+                      <argument op="eq" idref="COHazardMitigationFeeOutputNonShredded.AmountWrittenBeforeRounding" type="float" />
+                      <argument op="multiply" round="100" roundType="round" type="int" value="1" />
+                    </calculation>
+                  </value>
+                </rules>
+              </public>
+              <public id="COHazardMitigationFeeOutput.Indicator" path="Indicator" type="boolean">
+                <definition>
+                  <caption value="CO Hazard Mitigation Fee Output Indicator" />
+                </definition>
+                <rules>
+                  <default idref="False" />
+                  <value>
+                    <comparison compare="gt">
+                      <operand idref="COHazardMitigationFeeOutput.Amount" type="float" />
+                      <operand type="int" value="0" />
+                    </comparison>
+                  </value>
+                </rules>
+              </public>
+              <object id="COHazardMitigationFeeOutputNonShredded">
+                <minOccurs value="1" />
+                <maxOccurs value="1" />
+                <public id="COHazardMitigationFeeOutputNonShredded.AmountBeforeRounding" path="Amount" type="float">
+                  <definition>
+                    <caption value="CO Hazard Mitigation Fee Output Non Shredded Amount Before Rounding" />
+                    <maxLength idref="MaxLength.fValue" />
+                    <formatMask idref="FormatMask.PremiumPennies" />
+                  </definition>
+                </public>
+                <public path="change" type="float" class="excludeInChangeSummary" id="COHazardMitigationFeeOutputNonShredded.AmountChangeBeforeRounding">
+                  <definition>
+                    <caption value="CO Hazard Mitigation Fee Output Non Shredded Amount Change Before Rounding" />
+                    <maxLength idref="MaxLength.Premium" />
+                    <formatMask idref="FormatMask.PremiumPennies" />
+                    <readOnly idref="True" />
+                  </definition>
+                </public>
+                <public path="written" type="float" class="excludeInChangeSummary" id="COHazardMitigationFeeOutputNonShredded.AmountWrittenBeforeRounding">
+                  <definition>
+                    <caption value="CO Hazard Mitigation Fee Output Non Shredded Amount Written Before Rounding" />
+                    <maxLength idref="MaxLength.Premium" />
+                    <formatMask idref="FormatMask.PremiumPennies" />
+                    <readOnly idref="True" />
+                  </definition>
+                </public>
+              </object>
             </object>
           </object>
         </object>
